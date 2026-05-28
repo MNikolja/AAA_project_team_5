@@ -54,3 +54,5 @@ Thumbs.db
 
 /.quarto/
 **/*.quarto_ipynb
+uv.lock
+docs/report.pdf
