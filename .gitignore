@@ -48,6 +48,9 @@ CLAUDE.md
 .cursor/
 .windsurf/
 
+# Data
+data/
+
 # OS specific
 .DS_Store
 Thumbs.db
