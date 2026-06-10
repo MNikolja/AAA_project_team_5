@@ -39,6 +39,9 @@ __pycache__/
 .ruff_cache/
 .mypy_cache/
 
+#data
+data/
+
 # Agent/AI Related
 AGENTS.md
 GEMINI.md
@@ -54,3 +57,5 @@ Thumbs.db
 
 /.quarto/
 **/*.quarto_ipynb
+uv.lock
+docs/report.pdf
