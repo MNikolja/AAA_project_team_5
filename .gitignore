@@ -45,7 +45,7 @@ data/02/*
 data/03/*
 data/04/*
 data/05/*
-
+data/*
 
 *.joblib
 *.cache.sqlite
