@@ -68,3 +68,4 @@ Thumbs.db
 uv.lock
 docs/report.pdf
 *.json
+notebooks/01_data_cleaning.bcf
