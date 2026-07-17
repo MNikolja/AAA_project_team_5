@@ -1,0 +1,43 @@
+# Appendix {#sec-appendix}
+
+## Spatial Unit Analysis figures
+
+{{< embed notebooks/02_spatial_data_exploration.ipynb#fig-coords-community >}}
+
+{{< embed notebooks/02_spatial_data_exploration.ipynb#fig-coords-tract >}}
+
+{{< embed notebooks/02_spatial_data_exploration.ipynb#fig-hex-grids >}}
+
+{{< embed notebooks/02_spatial_data_exploration.ipynb#fig-hex-community >}}
+
+{{< embed notebooks/02_spatial_data_exploration.ipynb#fig-areal-weighted >}}
+
+{{< embed notebooks/02_spatial_data_exploration.ipynb#fig-trips-community >}}
+
+{{< embed notebooks/02_spatial_data_exploration.ipynb#fig-trips-tract >}}
+
+## Community-area demand patterns
+
+{{< embed notebooks/03a_community_feature_visualization.ipynb#fig-demand-spatial >}}
+
+{{< embed notebooks/03a_community_feature_visualization.ipynb#fig-hourly-demand >}}
+
+{{< embed notebooks/03a_community_feature_visualization.ipynb#fig-dow-demand >}}
+
+{{< embed notebooks/03a_community_feature_visualization.ipynb#fig-block-demand >}}
+
+{{< embed notebooks/03a_community_feature_visualization.ipynb#fig-month-demand >}}
+
+{{< embed notebooks/03a_community_feature_visualization.ipynb#fig-holiday-demand >}}
+
+{{< embed notebooks/03a_community_feature_visualization.ipynb#fig-feature-gradient >}}
+
+{{< embed notebooks/03a_community_feature_visualization.ipynb#fig-feature-grid >}}
+
+## Points of interest per area
+
+{{< embed notebooks/02_spatial_data_exploration.ipynb#fig-poi-demand >}}
+
+{{< embed notebooks/02_spatial_data_exploration.ipynb#fig-poi-tract >}}
+
+{{< embed notebooks/02_spatial_data_exploration.ipynb#fig-poi-community >}}
