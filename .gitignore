@@ -40,7 +40,15 @@ __pycache__/
 .mypy_cache/
 
 #data
-data/
+data/01/*
+data/02/*
+data/03/*
+data/04/*
+data/05/*
+data/*
+
+*.joblib
+*.cache.sqlite
 
 # Agent/AI Related
 AGENTS.md
@@ -60,3 +68,4 @@ Thumbs.db
 uv.lock
 docs/report.pdf
 *.json
+notebooks/01_data_cleaning.bcf
