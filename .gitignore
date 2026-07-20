@@ -57,3 +57,5 @@ Thumbs.db
 
 /.quarto/
 **/*.quarto_ipynb
+notebooks/cache/*
+*.joblib
