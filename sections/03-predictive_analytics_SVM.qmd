@@ -1,25 +1,29 @@
 ## Support Vector Machines (SVM)
 
-The SVR model has four dimensions of testing. Two spatial layers (448 census tracts or 77 community areas), target encoding (with or without), the target transformation (normal or log1p) and three temporal resolutions (1h, 4h, 1d). All of those layers are also tested on a linear, polynomial and RBF kernel. We compute all 24 combinations and analyze them in four controlled comparisons, where each phase varies exactly one factor while all others stay fixed. This isolates the effect of every design decision and still yields the overall best SVR as a benchmark against the neural network. The full feature set can be found in Appendix X.
-Phase 1 compares the two spatial layers at 1h resolution with target encoding and the untransformed target. Phase 2 compares with and without target encoding at 1h across both spatial layers. Target encoding adds one column containing the mean trip count per spatial unit over the training window, so the model learns whether a location is high or low demand^[Dummy encoding was rejected because it would add up to 448 sparse columns with high computational cost for SVR's quadratic kernel scaling.]. Phase 3 compares the untransformed target against log1p on community areas at 1h. Trip counts are strongly right-skewed, so a few high-demand baskets dominate the squared error. Applying log1p compresses these extremes. To avoid selecting a kernel that looks strong on the log scale but fails after back-transformation, the grid search uses a custom RMSE scorer that applies expm1 before computing the error on the original scale. The final phase compares the three temporal resolutions of 1h, 4h and 1d on community areas with target encoding.
+The SVR model has four dimensions of testing: two spatial layers (448 census tracts or 77 community areas), target encoding (with or without), the target transformation (normal or log1p) and three temporal resolutions (1h, 4h, 1d). All of those combinations are tested on a linear, polynomial and RBF kernel. We compute all 24 combinations once and analyze them in four controlled comparisons, where each phase varies exactly one factor while all others stay fixed. This isolates the effect of every design decision and still yields the overall best SVR as a benchmark against the neural network. The full feature set can be found in Appendix X.
 
-| Phase | Configuration | Kernel | R² | nMAE |
+One technical limitation shapes the whole setup. Kernel SVR scales roughly quadratically with the number of samples, so training on the full dataset (up to several million rows) is not feasible. Grid search therefore fits on a 20,000-row subsample and the final model is refit on 50,000 rows. This cap is a property of the method itself and will matter again when we compare against the neural network.
+
+Phase 1 compares the two spatial layers at 1h resolution with target encoding and the untransformed target. Phase 2 compares with and without target encoding at 1h across both spatial layers. Target encoding adds one column containing the mean trip count per spatial unit, computed on the training set only, so the model learns whether a location is generally busy or quiet.^[Dummy encoding was rejected because it would add up to 448 sparse columns, which is computationally expensive given the quadratic scaling of kernel SVR.] Phase 3 compares the untransformed target against log1p on community areas. Trip counts are strongly right-skewed, so a few high-demand baskets dominate the squared error, and log1p compresses these extremes. To avoid selecting a kernel that looks strong on the log scale but fails after back-transformation, the grid search uses a custom RMSE scorer that applies expm1 before computing the error on the original scale. The final phase compares the three temporal resolutions of 1h, 4h and 1d on community areas with target encoding.
+
+| Phase | Configuration | Kernel | R² | rMAE |
 |---|---|---|---|---|
-| 1: spatial | census_tract 1h | Poly | 0.65 | [check] |
-| 1: spatial | community_area 1h | Poly | 0.84 | [check] |
-| 2: target enc. | census_tract 1h + TE | Poly | 0.65 | [check] |
-| 2: target enc. | census_tract 1h (no TE) | Poly | 0.24 | 1.60 |
-| 2: target enc. | community_area 1h + TE | Poly | 0.84 | [check] |
-| 2: target enc. | community_area 1h (no TE) | Poly | 0.83 | [check] |
-| 3: transform | community_area 1h normal | Poly | 0.84 | [check] |
-| 3: transform | community_area 1h log1p | RBF | 0.83 | [check] |
-| 4: temporal | community_area 1h | Poly | 0.84 | [check] |
-| 4: temporal | community_area 4h | Poly | 0.88 | [check] |
-| 4: temporal | community_area 1d | Poly | 0.93 | 0.24 |
+| 1: spatial | census_tract 1h | Poly | 0.66 | 1.17 |
+| 1: spatial | community_area 1h | Poly | 0.83 | 0.44 |
+| 2: target enc. | census_tract 1h + TE | Poly | 0.66 | 1.17 |
+| 2: target enc. | census_tract 1h (no TE) | Poly | 0.22 | 1.58 |
+| 2: target enc. | community_area 1h + TE | Poly | 0.83 | 0.44 |
+| 2: target enc. | community_area 1h (no TE) | Poly | 0.83 | 0.68 |
+| 3: transform | community_area 1h normal | Poly | 0.83 | 0.44 |
+| 3: transform | community_area 1h log1p | RBF | 0.83 | 0.40 |
+| 4: temporal | community_area 1h | Poly | 0.83 | 0.44 |
+| 4: temporal | community_area 4h | Poly | 0.88 | 0.39 |
+| 4: temporal | community_area 1d | Poly | 0.93 | 0.23 |
 
 : SVR results across four controlled comparison phases {#tbl-svr-phases}
 
-Community areas consistently outperform census tracts (R² 0.84 vs 0.65). Target encoding is critical for census tracts (R² 0.65 vs 0.24) but marginal for community areas (0.84 vs 0.83). On the 1h scale, normal and log1p perform nearly identically (R² 0.84 vs 0.83), but at 4h log1p clearly wins (0.91 vs 0.88). Wider time windows improve R² (0.84 → 0.88 → 0.93) but lose the intra-day detail a fleet operator needs. Across all phases, the polynomial kernel achieves the best results on the untransformed target, while the RBF kernel wins whenever log1p is applied.
-The best model by R² is community area at daily resolution with target encoding and a polynomial kernel (R² 0.93, nMAE 0.24). However, a daily total per neighborhood is too coarse for a fleet operator to actually work with. While wider time windows perform better, they are not operationally suitable as the operator cannot coordinate the fleet precisely enough. Considering both predictive quality and operational usefulness, community area at 4h resolution with target encoding, log1p and an RBF kernel is the better choice (R² 0.91, nMAE 0.30)^[Due to different scales across temporal resolutions, the normalized MAE (MAE / mean demand) is used to enable a valid comparison.]. We considered recommending census tracts for finer spatial detail but decided against it for two reasons. First, fewer than half of the records contain census-tract information, so the model is trained on a significantly reduced dataset at that resolution (see chapter X). Second, community areas are already small enough to be operationally useful. The average community area covers roughly three square miles, meaning a taxi can cross one in under fifteen minutes at a typical city speed of 20 mph. Community-level forecasts translate directly into vehicle allocations, whereas many individual census tracts generate fewer than one trip per window, a granularity too fine to plan vehicles against.
-{{< embed notebooks/svr_model.ipynb#fig-svr-error-boxplot >}}
+Community areas clearly outperform census tracts (R² 0.83 against 0.66, rMAE 0.44 against 1.17).^[Due to different scales across temporal and spatial resolutions, the normalized MAE (MAE divided by mean demand) is used to enable a valid comparison.] Target encoding is what keeps the census tract layer usable at all: without it, R² collapses from 0.66 to 0.22. On community areas the effect on R² is marginal (0.83 against 0.83), but the normalized error still improves from 0.68 to 0.44. Log1p behaves similarly at 1h, where R² stays flat and only the error improves, but at 4h the transform lifts R² from 0.88 to 0.89 and reduces rMAE from 0.39 to 0.32. Wider time windows improve every metric (R² 0.83 to 0.88 to 0.93) because aggregation averages out short-term noise. Across the grid, the polynomial kernel performs best on the untransformed target, while the RBF kernel wins whenever log1p is applied.
 
+The best raw performance is community areas at daily resolution (R² 0.93, rMAE 0.23). Since a daily total per neighborhood is too coarse for actual fleet coordination, we select community areas at 4h with target encoding, log1p and an RBF kernel (R² 0.89, rMAE 0.32) as the final SVR benchmark against the neural network. The full discussion of which resolution the client should deploy follows in the final recommendation.
+
+{{< embed notebooks/svr_model.ipynb#fig-svr-error-boxplot >}}
