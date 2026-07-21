@@ -1,0 +1,19 @@
+# Appendix
+
+## SVR Results
+
+{{< embed notebooks/svr_model.ipynb#tbl-svr-full-grid >}}
+
+{{< embed notebooks/svr_model.ipynb#fig-svr-kernel-comparison >}}
+
+{{< embed notebooks/svr_model.ipynb#fig-svr-error-boxplot >}}
+
+## Neural Network Results
+
+{{< embed notebooks/Draft6_AAA_3b.ipynb#fig-nn-spatial-comparison >}}
+
+{{< embed notebooks/Draft6_AAA_3b.ipynb#fig-nn-temporal-comparison >}}
+
+{{< embed notebooks/Draft6_AAA_3b.ipynb#fig-nn-loss-curves >}}
+
+{{< embed notebooks/Draft6_AAA_3b.ipynb#fig-nn-predicted-vs-actual >}}
