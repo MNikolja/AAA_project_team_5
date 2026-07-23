@@ -109,7 +109,7 @@ robust on public holidays (@fig-holiday-demand): the airport and downtown poles
 persist across all four holiday flags, so atypical calendar days rescale demand
 rather than relocating it. All of these patterns hold essentially unchanged at
 census-tract resolution (@fig-hourly-demand-tract, @fig-block-demand-tract,
-@fig-dow-demand-tract, @fig-month-demand-tract, @fig-monthly-demand-tract,
+@fig-dow-demand-tract, @fig-month-demand-tract,
 @fig-holiday-demand-tract): the hourly and monthly curves are identical, since
 collapsing the spatial dimension erases any difference between the two units,
 while the block, weekday, monthly and holiday maps merely resolve the same two
