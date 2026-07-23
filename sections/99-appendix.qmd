@@ -28,11 +28,33 @@
 
 {{< embed notebooks/03a_community_feature_visualization.ipynb#fig-month-demand >}}
 
+{{< embed notebooks/03a_community_feature_visualization.ipynb#fig-monthly-demand >}}
+
 {{< embed notebooks/03a_community_feature_visualization.ipynb#fig-holiday-demand >}}
 
 {{< embed notebooks/03a_community_feature_visualization.ipynb#fig-feature-gradient >}}
 
 {{< embed notebooks/03a_community_feature_visualization.ipynb#fig-feature-grid >}}
+
+## Census-tract demand patterns
+
+{{< embed notebooks/03b_census_tract_feature_visualization.ipynb#fig-demand-spatial-tract >}}
+
+{{< embed notebooks/03b_census_tract_feature_visualization.ipynb#fig-hourly-demand-tract >}}
+
+{{< embed notebooks/03b_census_tract_feature_visualization.ipynb#fig-dow-demand-tract >}}
+
+{{< embed notebooks/03b_census_tract_feature_visualization.ipynb#fig-block-demand-tract >}}
+
+{{< embed notebooks/03b_census_tract_feature_visualization.ipynb#fig-month-demand-tract >}}
+
+{{< embed notebooks/03b_census_tract_feature_visualization.ipynb#fig-monthly-demand-tract >}}
+
+{{< embed notebooks/03b_census_tract_feature_visualization.ipynb#fig-holiday-demand-tract >}}
+
+{{< embed notebooks/03b_census_tract_feature_visualization.ipynb#fig-feature-gradient-tract >}}
+
+{{< embed notebooks/03b_census_tract_feature_visualization.ipynb#fig-feature-grid-tract >}}
 
 ## Points of interest per area
 

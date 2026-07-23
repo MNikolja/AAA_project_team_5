@@ -6,7 +6,7 @@ Every trip carries its location in three encodings, separately for pickup
 and dropoff: a community area (the 77 official Chicago community areas), a tract (~800 tracts),
 and a latitude/longitude coordinate pair. The data providers already document two caveats.
 The census tract may be blank for privacy reasons, and the latitude/longitude is the centroid
-of the census tract, or the centroid of the community area when the tract is suppressed.
+of the census tract, or the centroid of the community area when the tract is suppressed [@chicago_privacy_story].
 The coordinate is therefore not a raw GPS fix but a centroid whose true resolution depends
 on whether the tract survived anonymisation. In this section, we outline the pyhsical distribution of the coordinates
 and therfore of the trips, in order to argue for our unit of analysis for demand prediction.
@@ -41,7 +41,7 @@ would therefore be dominated by empty cells.
 To bridge the two tilings we tested areal interpolation: count trip
 endpoints per community area, then distribute each area's count onto the
 hexagons in proportion to their geometric overlap. This conserves essentially
-all of the roughly 2.6 million counted endpoints (@fig-areal-weighted), but
+all of the endpoints (@fig-areal-weighted), but
 it smooths the data, because trips are assumed uniform within each community
 area, so the outskirts become artificially homogeneous and the real
 concentration of activity is blurred.
@@ -82,7 +82,10 @@ Midway, the city's second airport to the south-west, barely registers, so the
 airport signal in this dataset is essentially an O'Hare signal. For a fleet
 operator this implies supply must be pre-positioned at O'Hare and downtown, and
 that vehicles will tend to accumulate downtown-bound out of the airport and need
-active rebalancing back.
+active rebalancing back. The census-tract equivalent (@fig-demand-spatial-tract)
+resolves both poles into individual tracts and reproduces the same O'Hare
+asymmetry, with the suppressed periphery emptier still, consistent with the
+coverage gap described above.
 
 Understanding the temporal distrubution, several things are noteworthy.
 Collapsing the spatial dimension and keeping time
@@ -98,13 +101,19 @@ week (@fig-dow-demand) weekdays are near-identical, but Saturday softens the
 O'Hare (airport and business-travel) pole while downtown activity holds up,
 consistent with a shift from business to leisure travel. Sunday then recovers the
 airport component as travellers return. Seasonally (@fig-month-demand) the
-spatial structure is invariant, but overall volume varies over the year, with
-December visibly the lightest month;***(Add such a plot, as with hour (collap space))
-a dedicated monthly-total series would be
-needed to quantify this precisely***. Finally, the demand geography is remarkably
+spatial structure is invariant, but overall volume varies over the year.
+Collapsing space and keeping time, as for the hourly view, quantifies this
+precisely: the monthly total (@fig-monthly-demand) confirms December as the
+year's low point. Finally, the demand geography is remarkably
 robust on public holidays (@fig-holiday-demand): the airport and downtown poles
 persist across all four holiday flags, so atypical calendar days rescale demand
-rather than relocating it.
+rather than relocating it. All of these patterns hold essentially unchanged at
+census-tract resolution (@fig-hourly-demand-tract, @fig-block-demand-tract,
+@fig-dow-demand-tract, @fig-month-demand-tract, @fig-monthly-demand-tract,
+@fig-holiday-demand-tract): the hourly and monthly curves are identical, since
+collapsing the spatial dimension erases any difference between the two units,
+while the block, weekday, monthly and holiday maps merely resolve the same two
+poles into finer tracts, with the suppressed periphery going emptier still.
 
 Averaging trip attributes per area separates the
 features into two clean groups. The weather variables (temperature, precipitation,
@@ -118,8 +127,10 @@ directions with short, cheap, slow trips in downtown versus long, expensive, fas
 from the edges and the airport. For an electric fleet this gradient is doubly
 relevant as peripheral and airport trips are not only higher-revenue but also
 higher-energy comsuming, with direct implications for vehicle range and charging strategy.
-The full 19-feature grid, and the day-of-week, block, month and holiday
-maps, are provided in @sec-appendix.
+The same gradient holds at census-tract resolution (@fig-feature-gradient-tract),
+confirming it is not an artefact of community-area aggregation. The full
+19-feature grid at both resolutions, and the day-of-week, block, month and
+holiday maps, are provided in @sec-appendix.
 
 Finally, we outline the effect of points of interest (POI) on the demand.
 The urban-mobility literature treats POI as a strong driver
