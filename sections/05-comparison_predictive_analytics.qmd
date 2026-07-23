@@ -1,0 +1,22 @@
+## Model Comparison and Recommendation
+
+Both models are evaluated on identical held-out test sets across four configurations, shown in @tbl-model-comparison. As described in the SVM section, the SVR had to be fitted on subsamples of 20,000 and 50,000 rows, while the network could be trained on the full data of 1.1 million rows for community areas at 1h and 6.8 million for census tracts. Part of the gap between the two models therefore reflects how much data each could use. We treat this as a property of the methods. Being able to use a dataset of this size is one of the advantages of the neural network as discussed in the lecture.
+
+| Configuration | SVR R² | FFNN R² | SVR rMAE | FFNN rMAE |
+|---|---|---|---|---|
+| Community area, 1h | 0.83 | 0.92 | 0.44 | 0.20 |
+| Census tract, 1h | 0.66 | 0.85 | 1.17 | 0.23 |
+| Community area, 4h | 0.89 | 0.93 | 0.32 | 0.17 |
+| Community area, 1d | 0.93 | 0.93 | 0.23 | 0.15 |
+
+: Comparison of SVR and FFNN across matched spatio-temporal configurations {#tbl-model-comparison}
+
+On R² the two models perform similarly as the time window widens. At 1d both reach 0.93. The difference in performance can be seen with more detailed resolutions. At 1h bins in community areas the SVR reaches 0.83 against 0.92, and on census tracts it falls to 0.66 while the network holds 0.85. The SVR only manages to keep up with the network when the baskets are aggregated into larger ones. The network stays more stable even in finer resolutions. The normalized MAE says the same. The network shows a lower error in every configuration, including the daily setting where R² is tied (0.15 against 0.23).
+
+Neither model is simpler to build. The SVR needed target encoding, log1p and a custom scorer. The network replaces the first with embeddings and avoids the other two by training on an L1 loss, which is robust to the skewed target, but requires architecture search, dropout and learning-rate tuning instead. What separates them is scale. The SVR cannot use the full dataset, and that shows at the fine resolutions where the extra data matters most.
+
+A more direct test is whether either model beats an operator working without one. We assume a fleet operator would rely on historical averages per community area, 4h basket and weekday/weekend split, essentially saying "on a Tuesday between 8 and 12 in community area 10 we expect 8.2 trips". This rule of thumb reaches an rMAE of 0.31 on the test set. The SVR does not beat it (0.32), most likely because it only sees a fraction of the training data, while the network reaches 0.17, an improvement of roughly 45 percent. For the SVR the modelling effort does not pay off against a simple historical average while for the network it clearly does. The network is therefore the model we would put into production.
+In practical terms, the network predicts demand within five trips of the actual count in roughly 83% of all 4h test windows (see @tbl-nn-accuracy).
+
+That leaves the question of which resolution to run it at. We recommend community areas in four-hour windows (R² 0.93, rMAE 0.17). Daily forecasts score marginally better (R² 0.93, rMAE 0.15) but are too coarse for a fleet operator to work with, while hourly forecasts add noise without adding planning value. Census tracts were considered for their finer spatial detail but rejected. Fewer than half of the records contain census tract information (see Chapter 1), and many tracts generate fewer than one trip per window, which is too granular to allocate vehicles against. Community areas are small enough to act on. The average community area in Chicago covers roughly three square miles,^[Chicago comprises 77 community areas across roughly 227 square miles (U.S. Census Bureau).] which a taxi can cross in under fifteen minutes.
+

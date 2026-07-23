@@ -39,6 +39,17 @@ __pycache__/
 .ruff_cache/
 .mypy_cache/
 
+#data
+data/01/*
+data/02/*
+data/03/*
+data/04/*
+data/05/*
+data/*
+
+*.joblib
+*.cache.sqlite
+
 # Agent/AI Related
 AGENTS.md
 GEMINI.md
@@ -59,3 +70,7 @@ Thumbs.db
 **/*.quarto_ipynb
 notebooks/cache/*
 *.joblib
+uv.lock
+docs/report.pdf
+*.json
+notebooks/01_data_cleaning.bcf

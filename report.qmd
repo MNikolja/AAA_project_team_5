@@ -1,13 +1,15 @@
 ---
 title: "Project Report Template" # Give your report a title
 course: "Advanced Analytics and Applications" # Specify the course name
-team: "00" # Specify your team number
+team: "05" # Specify your team number
 author:
-  - name: Student 1
+  - name: George Sadik
     student-id: "111111111"
-  - name: Student 2
+  - name: Kushale Fernando
     student-id: "222222222"
-  - name: Student 3
+  - name: Claus Hack
+    student-id: "333333333"
+  - name: Martin Nikoljacic
     student-id: "333333333"
 contact: student@smail.uni-koeln.de # Specify one contact for the project
 supervisor: "Univ.-Prof. Dr. Wolfgang Ketter"
@@ -21,12 +23,16 @@ date: 2026-04-01 # Date of submission
 \pagenumbering{arabic}
 \setcounter{page}{1}
 
-{{< include sections/01-introduction.qmd >}}
+{{< include sections/00-introduction.qmd >}}
+{{< include sections/01-data_cleaning.qmd >}}
 
-{{< include sections/02-analysis.qmd >}}
+{{< include sections/02-descriptive_spatial_analysis.qmd >}}
 
-{{< include sections/03-descriptive.qmd >}}
-
+{{< include sections/03-predictive_analytics_SVM.qmd >}}
+{{< include sections/04-predictive_analytics_NN.qmd >}}
+{{< include sections/05-comparison_predictive_analytics.qmd >}}
+{{< include sections/06-reinforcement_learning.qmd >}}
+{{< include sections/07-discussion_outlook.qmd >}}
 
 # Citations and References
 You can easily cite your sources using BibLaTeX. For example, you can cite the Quarto documentation [@quarto2024] or a textbook like "R for Data Science" [@wickham2023]. The bibliography will be automatically generated at the end of the document.
@@ -34,4 +40,4 @@ You can easily cite your sources using BibLaTeX. For example, you can cite the Q
 # Conclusion
 The conclusion should summarize your findings and suggest future work.
 
-{{< include sections/99-appendix.qmd >}}
+{{< include sections/08-appendix.qmd >}}
