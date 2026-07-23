@@ -104,7 +104,7 @@ airport component as travellers return. Seasonally (@fig-month-demand) the
 spatial structure is invariant, but overall volume varies over the year.
 Collapsing space and keeping time, as for the hourly view, quantifies this
 precisely: the monthly total (@fig-monthly-demand) confirms December as the
-year's low point. Finally, the demand geography is remarkably
+year's low point. Finally, the demand geography is remarkably 
 robust on public holidays (@fig-holiday-demand): the airport and downtown poles
 persist across all four holiday flags, so atypical calendar days rescale demand
 rather than relocating it. All of these patterns hold essentially unchanged at
