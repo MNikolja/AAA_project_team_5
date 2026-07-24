@@ -1,3 +1,7 @@
+# Demand prediction {#sec-demand-prediction}
+To predict the demand in a spatial unit at a specific time two models, 
+Neural Network and Support Vector Machines, are trained and compared based on different spatial and temporal units.
+
 ## Support Vector Machines (SVM)
 
 The SVR model has four dimensions of testing: two spatial layers (448 census tracts or 77 community areas), target encoding (with or without), the target transformation (normal or log1p) and three temporal resolutions (1h, 4h, 1d). Following the assignment, we start without a kernel using a LinearSVR baseline and gradually add complexity through RBF and polynomial kernels. All 24 combinations are tuned across these three Kernels. We compute all 24 combinations once and analyze them in four controlled comparisons, where each phase varies exactly one factor while all others stay fixed. This isolates the effect of every design decision and still yields the overall best SVR as a benchmark against the neural network. The full feature set can be found in Appendix X.

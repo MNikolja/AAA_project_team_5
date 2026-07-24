@@ -35,3 +35,9 @@
 
 % Define placeholders for metadata used in header/footer
 \providecommand{\headerauthor}{}
+
+% Add the bibliography heading to the table of contents (biblatex omits this by default)
+\defbibheading{bibliography}{%
+    \section*{\refname}%
+    \addcontentsline{toc}{section}{\refname}%
+}

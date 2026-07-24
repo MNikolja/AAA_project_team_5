@@ -1,1 +1,67 @@
-# Preprocessing
+# Preprocessing {#sec-data-cleaning}
+The main processing of data is splitted into three parts: data cleaning[^clearning], the inclusion of 
+additional data[^additional_data], and the aggregation of invidiual trips to generate a dataset for NN and SVM
+[^aggregation].
+
+[^clearning]: 01_data_cleaning.ipynb
+[^additional_data]: 02_other_data_sources.ipynb
+[^aggregation]: 03_data_preparation_for_nn_and_svm.ipynb
+
+
+## Data Cleaning
+In this step, the raw taxi trip data [@chicago_taxi_trips] is processed to a cleaned and usable version. 
+The notebook casts the data types, ensures correct timestamps. Records with no spatial information about the 
+pickup are dropped because these cannot be used for later prediction. This missingness is partly due to Chicago's 
+privacy protections, which suppress location data for trips in low-frequency census tracts [@chicago_privacy_story]. 
+Additionally, illogical records such as trips with an average speed of over 100 mph, negative payments and so 
+are dropped. Also excluded are trips which are extremly short in terms of time and distance [^short_trips] as we 
+assume that these might be erroneous, quick cancellations or other. Additionally, we exclude trips which are 
+extreme in the opposite direction[^long_trips] as these are rare which can be seen in @fig-outlier-filtering.
+In total xyz records are reduced to xyz final records. The individual columns can be seen in xyz.
+
+[^short_trips]: 60s or 0.01 miles
+[^long_trips]: 200 miles or 3 hours
+
+
+## Additional Data Sources
+To improve the demand prediction additional datasets are added: Holiday, weather, and point-of-interest data. 
+An additional Chicago special events dataset was evaluated but it was decided against merging it due to the high
+incompletion of the specific time and therefore cannot be matched exactly to the time [@chicago_special_events]. 
+The other sets, what the are about and the reason for inclusion are discussed in @tbl-additional-data-sources.
+
+Some weather data is discretized into binary values such as rain or snow to simplify the prediction. Instead
+of providing precise value for the prediction, we can just say that the day we want to predict is rainy. On 
+the otherhand we lose precision.
+
+| Dataset | What is the data about | Reason for inclusion |
+|---|---|---|
+| Holidays [@workingdays_holidays] | City, state, bank, and corporate holidays, including the day of the week | Different holiday types affect different rider groups, and trip behavior varies by weekday/weekend |
+| Weather[^weather-note] [@open_meteo_weather] | Hourly temperature, rain, snowfall, and wind speed for Chicago | Captures day/night and seasonal weather effects on demand at an hourly resolution matching the trip data |
+| Points of Interest [@openstreetmap] | Counts of 8 POI categories (healthcare, education, public services, tourism, nature, amenity, leisure, shops) per census tract and community area | Explains the purpose/attractiveness of a location, helping the model learn location-specific demand patterns |
+| Community area boundaries [@chicago_community_areas] | Polygon boundaries of Chicago's community areas | Used to compute community area centroid coordinates as a spatial feature |
+
+: Additional data sources {#tbl-additional-data-sources}
+
+
+
+[^weather-note]: We decided for a different weather data source to have hourlyy data.
+
+- Discretized continuous weather variables into binary indicators (`rain`, `strong_rain`, `snow`, `wind`, `strong_wind`) using domain-based thresholds (precipitation intensity, Beaufort scale).
+- Merged hourly weather into taxi trips by truncating `trip_start` to the nearest hour; validated match quality (max time delta under 1h).
+- Retrieved Points of Interest (POI) from OpenStreetMap via `osmnx`, categorized into 8 groups (healthcare, education, amenity, leisure, shops, public services, tourism, nature).
+- Aggregated POI counts per census tract and per community area, exported as CSVs.
+- Computed centroid coordinates for census tracts and community areas as spatial features, exported as CSVs.
+- Dropped temporary merge columns and exported the combined taxi + holiday + weather dataset to parquet.
+
+## Data Preparation for NN and SVM
+
+- Loaded the merged dataset from notebook 02 and renamed columns for aggregation.
+- Built a complete grid of time buckets (1h, 4h, 1d) crossed with spatial units (census tract, community area), so zero-demand periods are represented rather than dropped.
+- Aggregated trip counts into demand per time bucket and spatial unit, for both census tract and community area at all three resolutions.
+- Visualized trip-count distributions for each aggregation level.
+- Merged in previously prepared auxiliary features: holiday flags, POI category counts, centroid coordinates, and time-aggregated weather.
+- Engineered cyclic sin/cos features for hour and month at the aggregated level.
+- Ran a final null-value check across all six aggregated dataset variants.
+- Split each dataset chronologically into train/validation/test (70/15/15) to prevent data leakage.
+- Fit a MinMaxScaler on the training set only (POI counts, temperatures, centroid coordinates) and applied it to validation/test; saved fitted scalers to disk per dataset.
+- Documented how to reload and reuse the saved scalers in future prediction notebooks.

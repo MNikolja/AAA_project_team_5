@@ -1,4 +1,4 @@
-# Descriptive (Spatial) Analytics
+# Descriptive (Spatial) Analytics {#sec-descriptive-analysis}
 
 ## Spatial Unit Analysis
 
@@ -161,4 +161,3 @@ forward as an engineered feature in the predictive models, rather than
 leaving it as a standalone map. The full per-category maps, at both census-tract
 and community-area resolution, are provided in @sec-appendix (@fig-poi-tract,
 @fig-poi-community).
-
