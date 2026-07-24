@@ -59,12 +59,17 @@ CLAUDE.md
 .cursor/
 .windsurf/
 
+# Data
+data/
+
 # OS specific
 .DS_Store
 Thumbs.db
 
 /.quarto/
 **/*.quarto_ipynb
+notebooks/cache/*
+*.joblib
 uv.lock
 docs/report.pdf
 *.json
