@@ -54,6 +54,14 @@
 
 {{< embed notebooks/06b_census_tract_feature_visualization.ipynb#fig-feature-grid-tract >}}
 
+## Spatial hotspot analysis (KDE & GMM)
+
+{{< embed notebooks/07_spatial_hotspot_analysis.ipynb#fig-kde-hotspots >}}
+
+{{< embed notebooks/07_spatial_hotspot_analysis.ipynb#fig-gmm-hotspots >}}
+
+{{< embed notebooks/07_spatial_hotspot_analysis.ipynb#tbl-hotspot-ranking >}}
+
 ## Points of interest per area
 
 {{< embed notebooks/05_spatial_data_exploration.ipynb#fig-poi-demand >}}

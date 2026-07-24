@@ -1,4 +1,4 @@
-# Descriptive (Spatial) Analytics
+# Data Analytics
 
 ## Spatial Unit Analysis
 
@@ -86,6 +86,22 @@ active rebalancing back. The census-tract equivalent (@fig-demand-spatial-tract)
 resolves both poles into individual tracts and reproduces the same O'Hare
 asymmetry, with the suppressed periphery emptier still, consistent with the
 coverage gap described above.
+
+A hotspot analysis quantifies this picture. Fitting a Gaussian Mixture Model
+(GMM) to the pickup and dropoff coordinates, with the number of components
+chosen by AIC (K = 14 pickups, K = 15 dropoffs) and cross-checked against a
+kernel density estimate, decomposes demand into named, ranked components
+(@fig-kde-hotspots, @fig-gmm-hotspots, @tbl-hotspot-ranking). Near North Side
+(22.2 % of pickups) and the Loop (21.2 %) are the two largest pickup
+components, while the Loop alone accounts for 26.1 % of dropoffs. O'Hare
+splits into two adjacent components jointly holding 21.2 % of pickups but
+only 4.7 % of dropoffs, giving the pickup-heavy airport asymmetry a concrete
+figure. Because the GMM is a soft-clustering model, it also shows where this
+structure blurs: 18.1 % of pickup points and 22.5 % of dropoff points cannot
+be assigned to a single hotspot with more than 80 % certainty, so demand at
+basin boundaries, e.g. between the Loop and Near North Side, is genuinely
+shared rather than attributable to one pole, a nuance a hard fleet-zoning
+rule would miss.
 
 Understanding the temporal distrubution, several things are noteworthy.
 Collapsing the spatial dimension and keeping time
