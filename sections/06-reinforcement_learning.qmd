@@ -5,7 +5,7 @@ The primary goal is to develop a Reinforcement Learning (RL) agent to manage the
 
 ## Assumptions
 The following assumptions were made to define the problem scope fully:
-- The EV's battery has a 60 kWh capacity[@bmw_electric_models, @opel_electric_models].
+- The EV's battery has a 60 kWh capacity[@bmw_electric_models][@opel_electric_models].
 - The EV arrives home with many different states of charge (SoC) but the never completly empty, therefore a minimum SoC of 0.5 kWh is assumed.
 - To prevent extremely high unrealistic costs, the power in the cost function is normalized by the maximum power (22 kW).
 - The actual amount of energy charged in a step is determined by both the charging speed and the available battery capacity, and this value is used for the cost calculation.
