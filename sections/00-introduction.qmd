@@ -11,8 +11,7 @@ in piloting such work. Our goal is to equip the client with the analytical found
 
 This paper uses data of the City of Chicago to perform such an analyses.  First, the 
 data is preprocessed as described in @sec-data-cleaning. Continuing, with descriptive 
-temporal-spatial analysis in @sec-descriptive-analysis. In a third step, prediction 
+temporal-spatial data analysis in @sec-data-analytics. In a third step, prediction 
 models are developed, assessed and compared to estimate the expected demand depending 
-on environmental, time and spatial parameters in @sec-demand-prediction. Lastly, @sec-rl 
-discusses smart charging and its potential tp reduce costs using a reinforcement approach 
+on environmental, time and spatial parameters in @sec-demand-prediction. Lastly, @sec-rl discusses smart charging and its potential to reduce costs using a reinforcement approach 
 and a learning agent.

@@ -1,4 +1,4 @@
-# Data Analytics
+# Data Analytics {#sec-data-analytics}
 
 ## Spatial Unit Analysis
 
@@ -63,7 +63,7 @@ the community area demand is a valuable metric to orchestrate the amount of taxi
 in a certain area, with predictions being accurate enough and within a reasonably sized area
 for taxis to operate in.
 
-## Spatial and temporal demand patterns
+## Spatial and temporal demand patterns {#sec-spatial-temporal-demand-patterns}
 
 Taking the community area as our main spatial unit, we now characterise how demand
 varies across space and time for this unit. All maps in this part are drawn as paired
@@ -120,7 +120,7 @@ airport component as travellers return. Seasonally (@fig-month-demand) the
 spatial structure is invariant, but overall volume varies over the year.
 Collapsing space and keeping time, as for the hourly view, quantifies this
 precisely: the monthly total (@fig-monthly-demand) confirms December as the
-year's low point. Finally, the demand geography is remarkably 
+year's low nt. Finally, the demand geography is remarkably 
 robust on public holidays (@fig-holiday-demand): the airport and downtown poles
 persist across all four holiday flags, so atypical calendar days rescale demand
 rather than relocating it. All of these patterns hold essentially unchanged at
@@ -146,7 +146,7 @@ higher-energy comsuming, with direct implications for vehicle range and charging
 The same gradient holds at census-tract resolution (@fig-feature-gradient-tract),
 confirming it is not an artefact of community-area aggregation. The full
 19-feature grid at both resolutions, and the day-of-week, block, month and
-holiday maps, are provided in @sec-appendix.
+holiday maps, are provided in Appendix -@sec-appendix.
 
 Finally, we outline the effect of points of interest (POI) on the demand.
 The urban-mobility literature treats POI as a strong driver
@@ -175,5 +175,5 @@ non-technical explanation for the demand hot spots a fleet operator would care
 about. Practically, this correlation is what justifies carrying POI density
 forward as an engineered feature in the predictive models, rather than
 leaving it as a standalone map. The full per-category maps, at both census-tract
-and community-area resolution, are provided in @sec-appendix (@fig-poi-tract,
+and community-area resolution, are provided in Appendix -@sec-appendix (@fig-poi-tract,
 @fig-poi-community).

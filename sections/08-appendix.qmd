@@ -1,3 +1,7 @@
+```{=latex}
+\appendix
+```
+
 # Appendix {#sec-appendix}
 
 ## Spatial Unit Analysis figures
@@ -73,6 +77,45 @@
 ## Data Preparation
 {{< embed notebooks/01_data_cleaning.ipynb#fig-outlier-filtering >}}
 
+## Aggregated dataset and split sizes {#sec-app-aggregation-tables}
+
+| Spatial unit | Resolution | Records | Zero-trip buckets | Share zero |
+|---|---|---:|---:|---:|
+| Census tracts | Hourly (1h) | 9,660,552 | 9,272,242 | 96.0% |
+| Census tracts | 4-hourly (4h) | 2,415,611 | 2,259,325 | 93.5% |
+| Census tracts | Daily (1d) | 402,996 | 349,093 | 86.6% |
+| Community areas | Hourly (1h) | 1,572,648 | 688,049 | 43.8% |
+| Community areas | 4-hourly (4h) | 393,239 | 74,433 | 18.9% |
+| Community areas | Daily (1d) | 65,604 | 589 | 0.9% |
+
+: Number of records per aggregated dataset by spatial unit and temporal resolution, with the count and share of buckets containing zero trips {#tbl-aggregation-records}
+
+| Dataset | Train | Validation | Test |
+|---|---:|---:|---:|
+| Census tract (1h) | 6,762,388 | 1,449,082 | 1,449,082 |
+| Census tract (4h) | 1,690,929 | 362,341 | 362,341 |
+| Census tract (1d) | 282,098 | 60,449 | 60,449 |
+| Community area (1h) | 1,100,854 | 235,897 | 235,897 |
+| Community area (4h) | 275,269 | 58,985 | 58,985 |
+| Community area (1d) | 45,924 | 9,840 | 9,840 |
+
+: Number of records per chronological train/validation/test split (70/15/15) for each aggregated dataset {#tbl-split-sizes}
+
+## Trip count distribution per aggregated bucket {#sec-app-trip-count-dist}
+
+{{< embed notebooks/03_data_preparation_for_nn_and_svm.ipynb#fig-trip-count-dist-census >}}
+
+{{< embed notebooks/03_data_preparation_for_nn_and_svm.ipynb#fig-trip-count-dist-community >}}
+
+## Affected trips by weather conditions {#sec-app-trips-weather}
+
+{{< embed notebooks/02_other_data_sources.ipynb#fig-trips-rain >}}
+
+{{< embed notebooks/02_other_data_sources.ipynb#fig-trips-snow >}}
+{{< embed notebooks/02_other_data_sources.ipynb#fig-trips-strong-rain >}}
+{{< embed notebooks/02_other_data_sources.ipynb#fig-trips-wind >}}
+{{< embed notebooks/02_other_data_sources.ipynb#fig-trips-strong-wind >}}
+
 ## SVR Results
 
 {{< embed notebooks/svr_model.ipynb#fig-svr-train-test-dist >}}
@@ -96,3 +139,18 @@
 {{< embed notebooks/Draft6_AAA_3b.ipynb#fig-nn-predicted-vs-actual >}}
 
 {{< embed notebooks/Draft6_AAA_3b.ipynb#tbl-nn-accuracy >}}
+
+## Smart Charging with Reinforcement Learning {#app-rl}
+
+{{< embed notebooks/08_smart_charging_rl.ipynb#fig-energy-demand-distribution >}}
+
+{{< embed notebooks/08_smart_charging_rl.ipynb#fig-recharging-cost >}}
+
+{{< embed notebooks/08_smart_charging_rl.ipynb#fig-learning-curves >}}
+
+{{< embed notebooks/08_smart_charging_rl.ipynb#fig-shortfall-share >}}
+
+{{< embed notebooks/08_smart_charging_rl.ipynb#fig-charging-power-distribution >}}
+
+{{< embed notebooks/08_smart_charging_rl.ipynb#fig-final-soc-distribution >}}
+
