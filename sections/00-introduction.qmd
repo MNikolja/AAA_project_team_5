@@ -1,4 +1,18 @@
 # Introduction
-This report serves as a template for your team project. It is built using Quarto, which allows you to integrate your Python or R analysis directly into your writing.
+There are many recent trends in the smart mobility industry such as electrification, 
+autonomous driving and ride-hailing. In particular the last trend in combination with 
+an electric fleet which optimal operates autonomously is the subject of this work. 
+Commissioned by a renowned German car company this work analyses the potential of such a 
+ride-hailing platform in the US. The work is a pilot project as the car company lacks in 
+know-how. 
 
-By using this template, you ensure that your formatting (margins, line spacing, and fonts) matches the required standards for submission. The left margin is set to 4cm to allow for comments, while the other margins are 2.5cm. Line spacing is set to 1.5, and the main font is Times New Roman.
+We, Bane & Wayne Partners are a team of data scientists which already have experience 
+in piloting such work. Our goal is to equip the client with the analytical foundation.
+
+This paper uses data of the City of Chicago to perform such an analyses.  First, the 
+data is preprocessed as described in @sec-data-cleaning. Continuing, with descriptive 
+temporal-spatial analysis in @sec-descriptive-analysis. In a third step, prediction 
+models are developed, assessed and compared to estimate the expected demand depending 
+on environmental, time and spatial parameters in @sec-demand-prediction. Lastly, @sec-rl 
+discusses smart charging and its potential tp reduce costs using a reinforcement approach 
+and a learning agent.

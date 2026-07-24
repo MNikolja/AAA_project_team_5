@@ -1,1 +1,1 @@
-# Smart Charging Using Reinforcement Learning
+# Improve Smart Charging Using Reinforcement Learning {#sec-rl}
