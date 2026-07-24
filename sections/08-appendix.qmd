@@ -70,6 +70,9 @@
 
 {{< embed notebooks/05_spatial_data_exploration.ipynb#fig-poi-community >}}
 
+## Data Preparation
+{{< embed notebooks/01_data_cleaning.ipynb#fig-outlier-filtering >}}
+
 ## SVR Results
 
 {{< embed notebooks/svr_model.ipynb#fig-svr-train-test-dist >}}
