@@ -8,84 +8,31 @@ around 17:00 (@sec-data-analytics). Community areas are the spatial unit best su
 management, being complete, free of interpolation artefacts, and small enough (roughly three
 square miles) to act on, whereas census tracts are too sparse and privacy-suppressed to trust.
 At this resolution, demand can be predicted well from calendar, weather, and location alone:
-the feed-forward neural network reaches an R² of 0.90-0.93 and, at the recommended
+the feed-forward neural network reaches an R² of 0.90-0.93 and at the recommended
 4-hour/community-area resolution, cuts the error of a naive historical-average baseline
 by roughly 18 % (nMAE 0.25 against 0.31, @sec-demand-prediction). The additional complexity
 of the deep learning approach is therefore justified, as unlike the SVR it can train on the
 full multi-million-row dataset and stays stable at finer resolutions where the SVR degrades.
-Lastly, home charging of an EV taxi can be optimized with reinforcement learning: a tabular
+Lastly, home charging of an EV taxi can be optimized with reinforcement learning. A tabular
 Monte Carlo agent cuts charging cost by about 50 % against a naive full-charge baseline while
-keeping energy shortfalls to 0.14 % of episodes (@sec-rl).
+keeping energy shortfalls to 0.14 % of episodes (@sec-rl). It is also the more practical
+choice here, matching or exceeding a Deep Q-Network while being far easier and cheaper to
+train, particularly during hyperparameter search, an advantage that holds only as long as
+the state and action spaces stay small within the tabular agent's reach. 
 
 ## Discussion & Limitations
 For the fleet operator, these results translate into concrete operational guidance.
 The network's community-area, 4-hour forecasts are precise enough to steer vehicle
-pre-positioning: supply should be concentrated at O'Hare and downtown, with active
+pre-positioning: supply should be concentrated at airports and downtown, with active
 rebalancing back from the airport given its pickup-heavy asymmetry, and buffered
 ahead of the evening peak and around weekends and holidays, where the demand *level*
-shifts but not its *geography*. On charging, the RL results support relying primarily
-on private, home-based charging for the bulk of overnight and mid-day replenishment,
-since it is the setting the agent was trained on and it is where the roughly 50 % cost
-saving materializes, as the operator directly controls timing and can shift power to
-the cheapest, lowest-power slots. Public charging remains sensible as a complement
-rather than a substitute, for opportunistic top-ups near O'Hare and the periphery,
-where trips are highest in fare but also highest in energy use, and as a buffer
-against the state-of-charge uncertainty the agent already plans around.
+shifts but not its *geography*. On charging, the RL results show that optimizing the at home
+charging using smart agents has a high benefit in case of an exponential cost structure where
+high charging power costs more as the operator directly controls timing and can shift power to
+the cheapest, lowest-power slots. 
 
-Several limitations qualify these conclusions. On the data side, the demand models
-drop the exact year and date to avoid overfitting on a short, ongoing 2024-2026
-window, so they cannot yet learn a multi-year trend such as rising trip volumes
-in growing areas; capturing this would require adding the feature back deliberately
-or retraining the model regularly as new data arrives. The point-of-interest features
-are static snapshots that cannot reflect how the POI landscape changes over time,
-a limitation we accept because static POIs still help the model relate similar areas
-to one another. The census tract layer is constrained by Chicago's privacy suppression,
-which strips tract information from low-frequency trips: more than half of all records
-lack it, tract boundaries may have shifted within the observation window, and the
-resulting demand figures for suppressed or dropped records are filled with zero,
-which improves model fit but is a modelling convenience rather than ground truth.
-Coordinates throughout are area centroids rather than exact GPS points, so no encoding
-recovers true spatial precision beyond the community area or census tract. Model-side,
-the SVR's quadratic scaling meant it never saw more than a 50,000-row sample, so part
-of its gap to the network reflects data availability rather than architecture alone;
-the network's own depth search, in turn, was run once on a baseline configuration rather
-than per experiment, due to compute constraints. On the RL side, the agent was trained
-on a single, fixed home-charging window with a stylised cost and demand distribution,
-so it is not yet validated against fleet-scale coordination of many vehicles or real
-time-of-use electricity tariffs.
+Still, there are multiple limitations to consider. On the trip data side, the demand models does not include the exact year and date to avoid overfitting but this prevents the models to learn a multi-year trend such as rising trip volumes in growing areas. Capturing this would require adding the feature back deliberately or retraining the model regularly as new data arrives. The point-of-interest features are static snapshots that cannot reflect how the POI landscape changes over time, a limitation we accept because static POIs still help the model relate similar areas to one another. The census tract layer is constrained by Chicago's privacy suppression, which strips tract information from low-frequency trips and affects more than half of all records. Further tract boundaries may have shifted within the observation window influencing the prediction. These two conditions mean that many temporal-spatial buckets were filled with zeros, which improves model fit but is a modelling convenience rather than ground truth. Coordinates throughout are area centroids rather than exact GPS points, so no encoding recovers true spatial precision beyond the community area or census tract. Model-side, the SVR's quadratic scaling meant it never saw more than a 50,000-row sample, so part of its gap to the network reflects data availability rather than architecture alone. The NN's own depth search, was run once on a baseline configuration rather than per experiment, due to compute constraints. On the RL side, the agent was trained on very specific environment settings for a fixed home-charging window with a fixed cost function and demand distribution, so it is not yet validated against fleet-scale coordination of many vehicles or real time-of-use electricity tariffs. Also it does not include public charging, which is likely if a driver is on a long trip or has to wait at the airport. The agent is also not yet validated against fleet-scale coordination of many vehicles or real time-of-use electricity tariffs.
+
 
 ## Future Work
-Three directions would most improve the pilot's next iteration. First, moving the
-SVR to a linearly-scaling method, such as a Nyström-approximated kernel or a
-gradient-boosted tree like LightGBM, would let it train on the full dataset
-and give a fairer benchmark against the network, while an independent architecture
-search per neural network configuration would tighten that side of the comparison.
-Second, enriching the feature set with a genuine time trend and dynamic POI data,
-alongside external sources such as scheduled events (excluded here for incomplete
-timestamps), public transit disruptions, and electricity price feeds, could sharpen
-predictions and add supply-side context currently missing. Third, the smart charging
-agent should be extended from a single vehicle to a fleet-level setting with shared
-charging infrastructure, variable tariffs, and vehicle-specific battery and route
-profiles, closing the loop between where vehicles are needed, per the demand forecasts
-and hotspot geography identified here, and when they can most cheaply be recharged.
-
-
-
-##***Notes to be included in section above:***
-
-## Summary
-Discussion	&	Outlook:	Discuss	the	implications	of	your	results	for	the	potential	fleet	operator (client).	
-Which	further	analysis	would	you	consider	useful	and	could	be	conducted	on	the	given	dataset? Which	
-other	external	data	sources	might	be	interesting	 to	consider? Is	it	sensible	 to	install	private	charging	
-stations,	or	should	the	operator	draw	on	public	charging	stations?
-## Summary
-
-## Discussion & Limitations
-- As the exact year and date are dropped the model can not learn a trend over the years, e.g. increasing number of trips in certain areas. To solve this, the model should either take these additional information into account in future or must be regulary retrained to ensure the most up to date values
-- Static values for the POI are a limitation. They might already be included in the target variable but we decided to keep them, as they may help the model to correlate between similar census tracts/ community area
-- Spatial Limitation for census tract: only has half of the data
-- Census tract is missing in most of the records, therefore it gets filled by 0s which improve the prediction in this context
-- Census tract might have changed
-- Demand might not be accurate due to removing of records, especially for the census tracts
-- Coordinates are centroids and not exact locations
-## Future work
+Three directions would most improve the pilot's next iteration. First, moving the SVR to a linearly-scaling method, such as a gradient-boosted tree like XGBoost, which would allow it to train on the full dataset and also makes the results more explainable. Further it might be a fairer benchmark against the network, while an independent architecture search per neural network configuration would tighten that side of the comparison. Second, enriching the feature set with a genuine time trend and dynamic POI data, alongside external sources such as scheduled events (excluded here for incomplete timestamps) and public transit disruptions. Third, the smart charging agent should be extended from a single vehicle to a fleet-level setting with shared charging infrastructure, variable tariffs, and vehicle-specific battery, route profiles and more. This would be closer to a real-world scenario for a ride-hailing platform. This would then also influence the choice of learner, the state and action space grows and Monte Carlos or other tabular agents would most likely lose in comparison.

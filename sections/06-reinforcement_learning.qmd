@@ -23,12 +23,3 @@ A rule-based baseline calculates the power needed to fully charge the battery an
 The learning curves (@fig-learning-curves) show DQN stopping early but remaining above the baseline. Baseline and DQN rarely suffer energy shortfall, while MC has more shortfall episodes (@fig-shortfall-share): 0.14% of 5000 test episodes, the only nonzero rate among the three. The baseline nearly always charges at close to maximum power (mean ~21 kW), whereas DQN (~15 kW) and MC (~13 kW) learn to use lower power (@fig-charging-power-distribution), consistent with the final SoC distribution (@fig-final-soc-distribution): the baseline charges to full capacity, while DQN and MC charge only enough for the next trip, reducing cost.
 
 Overall, MC outperforms both baseline and DQN in total reward and cost while keeping shortfall low: MC (mean reward -20.60) and DQN (-23.80) both beat the baseline (-41.77) by nearly 50% in cost, with MC the most effective at balancing cost minimization against energy sufficiency.
-
-## Smart Charging Conclusion
-These results demonstrate the potential for smart EV charging, achieving significant cost savings while
-maintaining sufficient energy for the next trip. MC is the more practical choice for this
-setting, matching or exceeding DQN's performance while being far easier and cheaper to train,
-particularly for hyperparameter optimization. This advantage relies on the state and action space staying small.
-However, DQN performs well too, and its use of function approximation makes it better suited to more complex
-settings, so it is likely the stronger choice for more comlpex future work. Further extensions could
-also explore varying energy prices, different vehicle types, and additional real-world constraints.
