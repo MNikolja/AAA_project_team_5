@@ -23,9 +23,9 @@ format:
       - partials/header.tex
     cite-method: biblatex
     biblio-style: apa
-    toc: true
-    lof: true
-    lot: true
+    toc: false
+    lof: false
+    lot: false
     number-sections: true
     execute:
       echo: false
