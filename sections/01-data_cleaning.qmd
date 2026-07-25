@@ -1,12 +1,8 @@
 # Data and Preprocessing {#sec-data-cleaning}
 As a base for this work, we use the Chicago taxi trip dataset [@chicago_taxi_trips] which contains all taxi trips in Chicago from 2024 to 2026 and ongoing. The dataset is provided by the City of Chicago and is publicly available. It contains information about the pickup and dropoff locations, timestamps, trip distances, fares, and other relevant details for each trip. In total 473 census tracts and 77 community areas are covered by the dataset. 
-The main processing of data is splitted into three parts: data cleaning[^clearning], the inclusion of 
-additional data[^additional_data], and the aggregation of invidiual trips to generate a dataset for NN and SVM
-[^aggregation].
+The main processing of data is splitted into three parts: data cleaning, the inclusion of 
+additional data, and the aggregation of invidiual trips to generate a dataset for NN and SVM.
 
-[^clearning]: 01_data_cleaning.ipynb
-[^additional_data]: 02_other_data_sources.ipynb
-[^aggregation]: 03_data_preparation_for_nn_and_svm.ipynb
 
 
 \textbf{Data Cleaning: }

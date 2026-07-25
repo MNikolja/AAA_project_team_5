@@ -13,3 +13,7 @@ The analysis is based on a dataset of ride-hailing trips in Chicago (2024-2026 (
 3. Prediction models to estimate the expected demand depending on environmental, time and spatial parameters (@sec-demand-prediction)
 4. Smart charging and its potential to reduce costs using a reinforcement approach and a learning agent (@sec-rl)
 5. Discussion of the implications of the results for the potential fleet operator and recommendations for future work (@sec-discussion-outlook)
+
+To see the corresponding section to each of these question in the github repository[^repo], reference @tbl-notebook-overview.
+
+[^repo]: 'https://github.com/MNikolja/AAA_project_team_5'.

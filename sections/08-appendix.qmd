@@ -6,6 +6,26 @@
 
 # Appendix {#sec-appendix}
 
+## Notebook overview and additional Data Sources {#sec-app-notebook-overview}
+
+| # | Notebook | What it does |
+|---|---|---|
+| 00 | [00_create_mini_dataset.ipynb](notebooks/00_create_mini_dataset.ipynb) | Cuts one week out of the raw CSV (optional, see §6) |
+| 01 | [01_data_cleaning.ipynb](notebooks/01_data_cleaning.ipynb) | Cleaning: types, missing values, duplicates, outliers, time features |
+| 02 | [02_other_data_sources.ipynb](notebooks/02_other_data_sources.ipynb) | Adds holidays, events, weather, POIs and centroids (needs internet) |
+| 03 | [03_data_preparation_for_nn_and_svm.ipynb](notebooks/03_data_preparation_for_nn_and_svm.ipynb) | Aggregates demand per area and time bin, splits and scales it |
+| 04 | [04_hexagon_segmentation.ipynb](notebooks/04_hexagon_segmentation.ipynb) | Assigns H3 hexagon ids to pickup/dropoff coordinates |
+| 05 | [05_spatial_data_exploration.ipynb](notebooks/05_spatial_data_exploration.ipynb) | Explores the spatial structure of demand |
+| 06a | [06a_community_feature_visualization.ipynb](notebooks/06a_community_feature_visualization.ipynb) | Trip counts and features per community area |
+| 06b | [06b_census_tract_feature_visualization.ipynb](notebooks/06b_census_tract_feature_visualization.ipynb) | Same, per census tract |
+| 06c | [06c_hexagon_feature_visualization.ipynb](notebooks/06c_hexagon_feature_visualization.ipynb) | Same, per H3 hexagon |
+| 07 | [07_spatial_hotspot_analysis.ipynb](notebooks/07_spatial_hotspot_analysis.ipynb) | Hotspot detection with KDE and GMM |
+| 08a | [08a_SVR.ipynb](notebooks/08a_SVR.ipynb) | Demand forecasting with SVR |
+| 08b | [08b_NN.ipynb](notebooks/08b_NN.ipynb) | Demand forecasting with a neural network |
+| 09 | [09_smart_charging_rl.ipynb](notebooks/09_smart_charging_rl.ipynb) | EV smart charging: simulation, MDP, Monte Carlo vs DQN |
+
+: Project notebooks {#tbl-notebook-overview}
+
 | Dataset | What is the data about | Reason for inclusion |
 |---|---|---|
 | Holidays [@workingdays_holidays] | City, state, bank, and corporate holidays, including the day of the week | Different holiday types affect different rider groups, and trip behavior varies by weekday/weekend |
@@ -17,8 +37,49 @@
 
 [^weather-note]: We decided for a different weather data source to have hourly data.
 
+## Data Preparation
+{{< embed notebooks/01_data_cleaning.ipynb#fig-outlier-filtering >}}
 
-## Spatial Unit Analysis figures
+## Aggregated dataset and split sizes {#sec-app-aggregation-tables}
+
+| Spatial unit | Resolution | Records | Zero-trip buckets | Share zero |
+|---|---|---:|---:|---:|
+| Census tracts | Hourly (1h) | 9,660,552 | 9,272,242 | 96.0% |
+| Census tracts | 4-hourly (4h) | 2,415,611 | 2,259,325 | 93.5% |
+| Census tracts | Daily (1d) | 402,996 | 349,093 | 86.6% |
+| Community areas | Hourly (1h) | 1,572,648 | 688,049 | 43.8% |
+| Community areas | 4-hourly (4h) | 393,239 | 74,433 | 18.9% |
+| Community areas | Daily (1d) | 65,604 | 589 | 0.9% |
+
+: Number of records per aggregated dataset by spatial unit and temporal resolution, with the count and share of buckets containing zero trips {#tbl-aggregation-records}
+
+| Dataset | Train | Validation | Test |
+|---|---:|---:|---:|
+| Census tract (1h) | 6,762,388 | 1,449,082 | 1,449,082 |
+| Census tract (4h) | 1,690,929 | 362,341 | 362,341 |
+| Census tract (1d) | 282,098 | 60,449 | 60,449 |
+| Community area (1h) | 1,100,854 | 235,897 | 235,897 |
+| Community area (4h) | 275,269 | 58,985 | 58,985 |
+| Community area (1d) | 45,924 | 9,840 | 9,840 |
+
+: Number of records per chronological train/validation/test split (70/15/15) for each aggregated dataset {#tbl-split-sizes}
+
+## Trip count distribution per aggregated bucket {#sec-app-trip-count-dist}
+
+{{< embed notebooks/03_data_preparation_for_nn_and_svm.ipynb#fig-trip-count-dist-census >}}
+
+{{< embed notebooks/03_data_preparation_for_nn_and_svm.ipynb#fig-trip-count-dist-community >}}
+
+## Affected trips by weather conditions {#sec-app-trips-weather}
+
+{{< embed notebooks/02_other_data_sources.ipynb#fig-trips-rain >}}
+
+{{< embed notebooks/02_other_data_sources.ipynb#fig-trips-snow >}}
+{{< embed notebooks/02_other_data_sources.ipynb#fig-trips-strong-rain >}}
+{{< embed notebooks/02_other_data_sources.ipynb#fig-trips-wind >}}
+{{< embed notebooks/02_other_data_sources.ipynb#fig-trips-strong-wind >}}
+
+## Spatial Unit Analysis Figures
 
 {{< embed notebooks/05_spatial_data_exploration.ipynb#fig-coords-community >}}
 
@@ -86,49 +147,7 @@
 
 {{< embed notebooks/05_spatial_data_exploration.ipynb#fig-poi-community >}}
 
-## Data Preparation
-{{< embed notebooks/01_data_cleaning.ipynb#fig-outlier-filtering >}}
-
-## Aggregated dataset and split sizes {#sec-app-aggregation-tables}
-
-| Spatial unit | Resolution | Records | Zero-trip buckets | Share zero |
-|---|---|---:|---:|---:|
-| Census tracts | Hourly (1h) | 9,660,552 | 9,272,242 | 96.0% |
-| Census tracts | 4-hourly (4h) | 2,415,611 | 2,259,325 | 93.5% |
-| Census tracts | Daily (1d) | 402,996 | 349,093 | 86.6% |
-| Community areas | Hourly (1h) | 1,572,648 | 688,049 | 43.8% |
-| Community areas | 4-hourly (4h) | 393,239 | 74,433 | 18.9% |
-| Community areas | Daily (1d) | 65,604 | 589 | 0.9% |
-
-: Number of records per aggregated dataset by spatial unit and temporal resolution, with the count and share of buckets containing zero trips {#tbl-aggregation-records}
-
-| Dataset | Train | Validation | Test |
-|---|---:|---:|---:|
-| Census tract (1h) | 6,762,388 | 1,449,082 | 1,449,082 |
-| Census tract (4h) | 1,690,929 | 362,341 | 362,341 |
-| Census tract (1d) | 282,098 | 60,449 | 60,449 |
-| Community area (1h) | 1,100,854 | 235,897 | 235,897 |
-| Community area (4h) | 275,269 | 58,985 | 58,985 |
-| Community area (1d) | 45,924 | 9,840 | 9,840 |
-
-: Number of records per chronological train/validation/test split (70/15/15) for each aggregated dataset {#tbl-split-sizes}
-
-## Trip count distribution per aggregated bucket {#sec-app-trip-count-dist}
-
-{{< embed notebooks/03_data_preparation_for_nn_and_svm.ipynb#fig-trip-count-dist-census >}}
-
-{{< embed notebooks/03_data_preparation_for_nn_and_svm.ipynb#fig-trip-count-dist-community >}}
-
-## Affected trips by weather conditions {#sec-app-trips-weather}
-
-{{< embed notebooks/02_other_data_sources.ipynb#fig-trips-rain >}}
-
-{{< embed notebooks/02_other_data_sources.ipynb#fig-trips-snow >}}
-{{< embed notebooks/02_other_data_sources.ipynb#fig-trips-strong-rain >}}
-{{< embed notebooks/02_other_data_sources.ipynb#fig-trips-wind >}}
-{{< embed notebooks/02_other_data_sources.ipynb#fig-trips-strong-wind >}}
-
-## SVR Feature Set {#sec-app-svr-features}
+## SVR {#sec-app-svr-features}
 
 @tbl-svr-features lists the input features used by the SVR models. Cyclic temporal features and the point-of-interest counts are used at every temporal resolution except the daily bin, where `hour_sin` / `hour_cos` are dropped since an hour-of-day signal is meaningless when every basket spans a full day. The target-encoding feature `spatial_target_mean` is only included in configurations where target encoding is enabled, which includes the final selected SVR (community areas, 4h resolution).
 
@@ -143,7 +162,7 @@
 | Spatial | `centroid_lat`, `centroid_lon` | Centroid coordinates of the spatial unit, letting the model learn geographic proximity |
 | Target encoding | `spatial_target_mean` | Mean trip count per spatial unit, computed on the training set only (included only when target encoding is enabled) |
 
-: Full SVR feature set {#tbl-svr-features}
+: Full SVR predictive feature set {#tbl-svr-features}
 
 | Phase | Configuration | Kernel | R² | rMAE |
 |---|---|---|---|---|
@@ -160,8 +179,6 @@
 | 4: temporal | community_area 1d | Poly | 0.93 | 0.23 |
 
 : SVR results across four controlled comparison phases {#tbl-svr-phases}
-
-## SVR Results
 
 {{< embed notebooks/08a_SVR.ipynb#fig-svr-train-test-dist >}}
 
