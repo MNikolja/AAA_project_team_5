@@ -7,6 +7,7 @@
 - Static values for the POI are a limitation. They might already be included in the target variable but we decided to keep them, as they may help the model to correlate between similar census tracts/ community area
 - Spatial Limitation for census tract: only has half of the data
 - Census tract is missing in most of the records, therefore it gets filled by 0s which improve the prediction in this context
-- CEnsus tract might have changed
+- Census tract might have changed
 - Demand might not be accurate due to removing of records, especially for the census tracts
+- Coordinates are centroids and not exact locations
 ## Future work
