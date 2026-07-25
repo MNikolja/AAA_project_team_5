@@ -1,0 +1,27 @@
+{{< pagebreak >}}
+\thispagestyle{empty}
+
+\section*{Decleration of generative AI}
+
+During the preparation of this work, the authors used generative AI in order to improve language and readability, as well as to help with simple coding tasks. No notebooks or tasks where oneshoted and after using this service, the authors reviewed and edited the content as needed and take full responsibility for the content of the paper.
+
+\section*{Statutory Declaration}
+\label{sec:SOOA}
+
+We hereby declare in lieu of oath that we have written this report independently and without using any sources or aids other than those indicated. All passages taken verbatim or in paraphrase from published or unpublished writings have been identified as such. The report has not been submitted in the same or similar form or in extracts as part of any other examination.
+
+\noindent
+
+We are aware of the criminal liability of a false statutory declaration, in particular the threat of punishment under § 156 of the German Criminal Code (StGB) of up to three years' imprisonment or a fine in the case of intentional commission, or under § 161 (1) StGB of up to one year's imprisonment or a fine in the case of negligent commission.
+\vspace{1cm}
+
+\vspace{3cm}
+\noindent
+\textbf{Team 05} 
+
+\vspace{0.5cm}
+\noindent
+Cologne,  26.07.2026
+
+{{< pagebreak >}}
+

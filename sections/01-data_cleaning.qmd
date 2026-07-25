@@ -1,7 +1,5 @@
-# Preprocessing {#sec-data-cleaning}
+# Data and Preprocessing {#sec-data-cleaning}
 As a base for this work, we use the Chicago taxi trip dataset [@chicago_taxi_trips] which contains all taxi trips in Chicago from 2024 to 2026 and ongoing. The dataset is provided by the City of Chicago and is publicly available. It contains information about the pickup and dropoff locations, timestamps, trip distances, fares, and other relevant details for each trip. In total 473 census tracts and 77 community areas are covered by the dataset. 
-
-
 The main processing of data is splitted into three parts: data cleaning[^clearning], the inclusion of 
 additional data[^additional_data], and the aggregation of invidiual trips to generate a dataset for NN and SVM
 [^aggregation].
@@ -11,7 +9,7 @@ additional data[^additional_data], and the aggregation of invidiual trips to gen
 [^aggregation]: 03_data_preparation_for_nn_and_svm.ipynb
 
 
-## Step 1: Data Cleaning
+\textbf{Data Cleaning: }
 In this step, the raw taxi trip data [@chicago_taxi_trips] is processed to a cleaned and usable version. 
 The notebook casts the data types, ensures correct timestamps. Records with no spatial information about the 
 pickup are dropped because these cannot be used for later prediction. This missingness is partly due to Chicago's 
@@ -25,36 +23,19 @@ In total 15,406,960 records are reduced to 13,478,292 in this first step.
 [^short_trips]: 60s or 0.01 miles
 [^long_trips]: 200 miles or 3 hours
 
-
-## Step 2:Additional Data Sources
+\textbf{Additional Data Sources: }
 To improve the demand prediction additional datasets are added: Holiday, weather, and point-of-interest data. 
 An additional Chicago special events dataset was evaluated but it was decided against merging it due to the high
 incompletion of the specific time and therefore cannot be matched exactly to the time [@chicago_special_events]. 
 The other sets, what the are about and the reason for inclusion are discussed in @tbl-additional-data-sources.
 
-
-| Dataset | What is the data about | Reason for inclusion |
-|---|---|---|
-| Holidays [@workingdays_holidays] | City, state, bank, and corporate holidays, including the day of the week | Different holiday types affect different rider groups, and trip behavior varies by weekday/weekend |
-| Weather[^weather-note] [@open_meteo_weather] | Hourly temperature, rain, snowfall, and wind speed for Chicago | Captures day/night and seasonal weather effects on demand at an hourly resolution matching the trip data |
-| Points of Interest [@openstreetmap] | Counts of 8 POI categories (healthcare, education, public services, tourism, nature, amenity, leisure, shops) per census tract and community area | Explains the purpose/attractiveness of a location, helping the model learn location-specific demand patterns |
-| Community area / census tract boundaries [@chicago_community_areas] | Polygon boundaries of Chicago's community areas | Used to compute community area centroid coordinates as a spatial feature |
-
-: Additional data sources {#tbl-additional-data-sources}
-
-[^weather-note]: We decided for a different weather data source to have hourly data.
-
 Some weather data is discretized into binary values such as rain or snow to simplify the prediction. Instead
 of providing precise value for the prediction, we can just say that the day we want to predict is rainy. How many
 trips are impacted by the weather columns can be see in Appendix -@sec-app-trips-weather.  On the otherhand we accept to lose
-some precision for later performance increase. 
-
-Furthermore, the point-of-interest (POI) data is retrieved from OpenStreetMap and categorized into 8 groups (healthcare, education, amenity, leisure, shops, public services, tourism, nature). These are further discussed in @sec-spatial-temporal-demand-patterns. One big drawback of the POI data is that it is static over the whole time period of the taxi trip data, which means that any changes in the POI landscape over time are not captured. However, we assume that the POI landscape does not change significantly over the 3-year period of the taxi trip data, and therefore this static representation is sufficient for our analysis.
-
+some precision for later performance increase. Furthermore, the point-of-interest (POI) data is retrieved from OpenStreetMap and categorized into 8 groups (healthcare, education, amenity, leisure, shops, public services, tourism, nature). These are further discussed in @sec-spatial-temporal-demand-patterns. One big drawback of the POI data is that it is static over the whole time period of the taxi trip data, which means that any changes in the POI landscape over time are not captured. However, we assume that the POI landscape does not change significantly over the 3-year period of the taxi trip data, and therefore this static representation is sufficient for our analysis.
 Lastly we used the community area and census tract boundaries to compute the centroid coordinates for each spatial unit. These coordinates are later used as additional features in the prediction models, providing a spatial reference for each area. This enables the models to learn spatial relationships and patterns in demand across different locations in Chicago.
 
-
-## Step 3: Aggregation & Data Preparation for NN and SVM
+\textbf{Aggregation and Data Preparation for NN and SVM: }
 The final step is to aggregate the data to a level that can be used for the prediction models, as these models do not work on individual trips but on aggregated demand per time bucket and spatial unit. The aggregation is done for both census tract and community area at three different temporal resolutions: hourly, 4-hourly, and daily. This results in six different datasets, each representing a unique combination of spatial and temporal granularity. The resulting number of records for each dataset is shown in @tbl-aggregation-records in Appendix -@sec-app-aggregation-tables. Temporal-spatial buckets with no trips are filled with a demand of zero to ensure that the models can learn from both high and low demand periods.
 
 It must be noted, that while the community area can use the whole dataset, the census tract aggregation is quite limited due to the privacy protection of the City of Chicago, which suppresses census tract information for trips in low-frequency census tracts [@chicago_privacy_story]. This results in a significant reduction of usable records for the census tract aggregation, especially for low demand areas or during low demand periods. This limitation is important to consider when interpreting the results of the models, as it may affect the accuracy and generalizability of the predictions for census tracts. The resulting distribution of trip counts per bucket heavily tends towards zero, with the census tract grid being dominated by zero- and low-demand buckets, as shown in @fig-trip-count-dist-census and @fig-trip-count-dist-community in Appendix -@sec-app-trip-count-dist.
