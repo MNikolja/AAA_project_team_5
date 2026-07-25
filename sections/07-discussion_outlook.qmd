@@ -8,9 +8,9 @@ around 17:00 (@sec-data-analytics). Community areas are the spatial unit best su
 management, being complete, free of interpolation artefacts, and small enough (roughly three
 square miles) to act on, whereas census tracts are too sparse and privacy-suppressed to trust.
 At this resolution, demand can be predicted well from calendar, weather, and location alone:
-the feed-forward neural network reaches an R² of 0.92-0.93 and, at the recommended
+the feed-forward neural network reaches an R² of 0.90-0.93 and, at the recommended
 4-hour/community-area resolution, cuts the error of a naive historical-average baseline
-by roughly 45 % (rMAE 0.17 against 0.31, @sec-demand-prediction). The additional complexity
+by roughly 18 % (nMAE 0.25 against 0.31, @sec-demand-prediction). The additional complexity
 of the deep learning approach is therefore justified, as unlike the SVR it can train on the
 full multi-million-row dataset and stays stable at finer resolutions where the SVR degrades.
 Lastly, home charging of an EV taxi can be optimized with reinforcement learning: a tabular
