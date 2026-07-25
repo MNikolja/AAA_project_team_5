@@ -1,33 +1,75 @@
 # Smart Charging Using Reinforcement Learning {#sec-rl}
-Another request from the project team was to improve the smart charging of an electric vehicle (EV) taxi using Reinforcement Learning (RL). The goal is to minimize the total recharging cost while ensuring that the EV has enough energy for its work after departure. 
+Another request from the project team was to improve the smart charging of an electric vehicle (EV) taxi using Reinforcement Learning (RL).
+The goal is to minimize the total recharging cost while ensuring that the EV has enough energy for its work after departure. 
+Therfore, we should develop a RL agent. The scenario involves an EV taxi that is charged at home between 2 p.m. and 4 p.m. daily,
+with the agent making decisions on the charging power in 15-minute intervals.
+The recharging costs increase exponentially with the charging power, and a high penalty
+is applied if the EV runs out of energy, making this the worst-case scenario to avoid.
+The vehicle's battery has a fixed capacity that cannot be exceeded.
 
-The primary goal is to develop a Reinforcement Learning (RL) agent to manage the home charging of an electric vehicle (EV) taxi. The agent's objective is to minimize the total recharging cost while ensuring the taxi has enough energy for its work after departure. The scenario involves an EV taxi that is charged at home between 2 p.m. and 4 p.m. daily, with the agent making decisions on the charging power in 15-minute intervals. The recharging costs increase exponentially with the charging power, and a high penalty is applied if the EV runs out of energy, making this the worst-case scenario to avoid. The vehicle's battery has a fixed capacity that cannot be exceeded.
-
-## Assumptions
+## Assumptions and Markov Decission Process Formulation
 The following assumptions were made to define the problem scope fully:
-The EV's battery has a 60 kWh capacity[@bmw_electric_models][@opel_electric_models].
-The EV arrives home with many different states of charge (SoC) but the never completly empty, therefore a minimum SoC of 0.5 kWh is assumed.
-To prevent extremely high unrealistic costs, the power in the cost function is normalized by the maximum power (22 kW).
-The actual amount of energy charged in a step is determined by both the charging speed and the available battery capacity, and this value is used for the cost calculation.
+1. The EV's battery has a 60 kWh capacity[@bmw_electric_models][@opel_electric_models].
+2. The EV arrives home with different states of charge (SoC) but never completly empty,
+therefore a minimum SoC of 0.5 kWh is assumed.
+3. To prevent extremely high unrealistic costs, the power in the cost function is normalized
+by the maximum power (22 kW) and the actual amount of energy charged in a step is determined
+by both the charging speed and the available battery capacity, with this value being used for the cost calculation.
 
-## Simulation Environment and Markov Decision Process (MDP) Formulation
 A discrete event simulation is created to model the charging environment, which is then formalized as a Markov Decision Process (MDP):
-State ($s_t$): The state is a tuple of the current time step and the battery's state of charge (SoC), i.e., (t, soc_t).
-Actions ($a_t$): The agent can choose from a discrete set of charging power levels: {0.0, 4.4, 8.8, 13.2, 17.6, 22.0} kW.
-Transitions: The battery's SoC is updated at each step based on the chosen power, the time interval (0.25h), and the remaining capacity.
-Reward ($r_t$): The reward is the negative of the charging cost. At the final step (4 p.m.), a large penalty is subtracted from the reward if the final SoC is less than the stochastic energy demand for the upcoming trip.
+1. State ($s_t$): The state is a tuple of the current time step and the battery's state of charge (SoC), i.e., (t, $soc_t$).
+2. Actions ($a_t$): The agent can choose from a discrete set of charging power levels: {0.0, 4.4, 8.8, 13.2, 17.6, 22.0} kW.
+3. Transitions: The battery's SoC is updated at each step based on the chosen power, the time interval (0.25h), and the remaining capacity.
+4. Reward ($r_t$): The reward is the negative of the charging cost. At the final step (4 p.m.), a large penalty is subtracted from the reward if the final SoC is less than the stochastic energy demand for the upcoming trip.
 
-The energy demand for the next trip is simulated by drawning from a normal distribution (μ=30 kWh, σ=5 kWh) upon departure. The EV's state of charge upon arrival at 2 p.m. is also drawn from a normal distribution (μ=20 kWh, σ=5 kWh). Both distributions are shown in @app-rl in @fig-energy-demand-distribution and @fig-recharging-cost.
-These distributions introduce stochasticity into the environment, making it more realistic and challenging for the RL agent to learn an effective charging strategy. The agent must learn to balance the trade-off between minimizing costs and ensuring sufficient energy for the next trip, taking into account the uncertainty in energy demand and initial SoC.
+The energy demand for the next trip is simulated by drawning from a normal distribution ($\mu$=30 kWh, $\sigma$=5 kWh) upon departure, as well
+as the EV's state of charge upon arrival ($\mu$=20 kWh,$\sigma$=5 kWh).
+Both distributions are shown in @sec-app-rl in @fig-energy-demand-distribution and @fig-recharging-cost.
+These distributions introduce stochasticity into the environment, making it more realistic and challenging
+for the RL agent to learn an effective charging strategy.
+The agent must learn to balance the trade-off between minimizing costs
+and ensuring sufficient energy for the next trip, taking into account the uncertainty in energy demand
+and initial SoC.
 
 ## Comparison of learners and baseline
-A simple, rule-based policy is established as a baseline, which calculates the power needed to fully charge the battery and distributes this charging evenly over the 8 time slots. A tabular Monte Carlo (MC) agent is trained, learning the value of state-action pairs by averaging the returns from complete episodes. Hyperparameters like the exploration rate (epsilon) and discount factor (gamma) are optimized through a grid search. Additionally, a Deep Q-Network (DQN) agent from the stable-baselines3 library is implemented, learning from individual transitions stored in a replay buffer. An extensive grid search is performed to optimize its hyperparameters (e.g., learning rate, network architecture, reward scaling). All three policies (Baseline, MC, and DQN) are trained on the same amount of environment interactions and then evaluated on a separate set of episodes to compare their performance based on total reward, cost, and energy shortfall. 
+A simple, rule-based policy is established as a baseline, which calculates the power needed to fully
+charge the battery and distributes this charging evenly over the 8 time slots. A tabular Monte Carlo (MC)
+agent is trained, learning the value of state-action pairs by averaging the returns from complete episodes.
+Hyperparameters like the exploration rate (epsilon) and discount factor (gamma) are optimized through a grid
+search. Additionally, a Deep Q-Network (DQN) agent from the stable-baselines3 library is implemented, learning
+from individual transitions stored in a replay buffer. An extensive grid search is performed to optimize its
+hyperparameters (e.g., learning rate, network architecture, reward scaling). All three policies (Baseline, MC, and DQN)
+are trained on the same amount of environment interactions and then evaluated on a separate set of episodes to compare
+their performance based on total reward, cost, and energy shortfall. 
 
-The learning curve can be seen in @app-rl in @fig-learning-curves showing an early stopping of DQN but still being above the baseline. Both, baseline and DQN have few issues with energy shortfall, while the MC agent has a higher number of episodes with energy shortfall, see @fig-shortfall-share. Especially the baseline nearly always uses the maximum charging power with a mean of ~21 kW, while the DQN (~mean 15 kW) and MC (~mean 13 kW) agents learn to use lower charging powers, see @fig-charging-power-distribution. The final state of charge distribution is shown in @fig-final-soc-distribution, hwere one can see that the baseline tends to charge the battery to full capacity, while the DQN and MC agents learn to charge to a lower level, which is sufficient for the next trip but reduces costs. Still, MC learns to even use lower charging powers than DQN, which is reflected in the final SoC distribution. Overall, the MC agent outperforms both the baseline and DQN agent in terms of total reward and cost, while maintaining a low energy shortfall rate. Both beat the baseline (mean reward -41.77) by nearly 50% in terms of total cost, while the MC agent (mean reward -20.60) achieves the lowest cost among the three. The DQN agent (mean reward -23.80) also performs well, but its performance is slightly worse than the MC agent. The results indicate that the MC agent is the most effective in learning an optimal charging strategy that balances cost minimization and energy sufficiency for the next trip. Contrary MC is only agent and policy that had shortfall issues of 0.14 % of the 5000 tested episodes.
+The learning curves (@fig-learning-curves) show an early stopping of DQN but still being above the baseline.
+Both, baseline and DQN have few issues with energy shortfall, while the MC agent has a higher number of episodes
+with energy shortfall, see @fig-shortfall-share. Especially the baseline nearly always uses the maximum charging
+power with a mean of ~21 kW, while the DQN (~mean 15 kW) and MC (~mean 13 kW) agents learn to use lower charging
+powers, see @fig-charging-power-distribution. The final state of charge distribution is shown in @fig-final-soc-distribution,
+hwere one can see that the baseline tends to charge the battery to full capacity, while the DQN and MC agents
+learn to charge to a lower level, which is sufficient for the next trip but reduces costs. Still, MC learns to
+even use lower charging powers than DQN, which is reflected in the final SoC distribution. Overall, the MC agent
+outperforms both the baseline and DQN agent in terms of total reward and cost, while maintaining a low energy shortfall
+rate. Both beat the baseline (mean reward -41.77) by nearly 50% in terms of total cost, while the MC agent (mean reward -20.60)
+achieves the lowest cost among the three. The DQN agent (mean reward -23.80) also performs well, but its performance is slightly
+worse than the MC agent. The results indicate that the MC agent is the most effective in learning an optimal charging strategy
+that balances cost minimization and energy sufficiency for the next trip. Contrary MC is only agent and policy that had
+shortfall issues of 0.14 % of the 5000 tested episodes.
 
 ## Conclusion
-Overall, the results demonstrate the potential of reinforcement learning in optimizing smart charging strategies for electric vehicles, leading to significant cost savings and improved energy management in case of higher costs of charging power. The MC agent, in particular, shows promise as an effective approach for learning optimal charging policies in a stochastic environment. It further has to be noted that the computational overhead of the DQN agent is significantly higher than the MC agent, in particular for the hyperparameter optimization, which is a crucial aspect of RL. The MC agent's simplicity and efficiency make it a more practical choice for real-world applications, especially when computational resources are limited as long as the state and action space is not too large. The findings highlight the importance of considering both cost and energy sufficiency in developing smart charging strategies for electric vehicles, and they provide a foundation for future research in this area.
-Further research could explore more complex scenarios, such as varying energy prices, different vehicle types, and real-world constraints to enhance the applicability of the learned policies.
+Overall, the results demonstrate the potential of reinforcement learning in optimizing smart charging
+strategies for electric vehicles, leading to significant cost savings and improved energy management
+in case of higher costs of charging power. The MC agent, in particular, shows promise as an effective
+approach for learning optimal charging policies in a stochastic environment. It further has to be noted
+that the computational overhead of the DQN agent is significantly higher than the MC agent, in particular
+for the hyperparameter optimization, which is a crucial aspect of RL. The MC agent's simplicity and
+efficiency make it a more practical choice for real-world applications, especially when computational
+resources are limited as long as the state and action space is not too large. The findings highlight the
+importance of considering both cost and energy sufficiency in developing smart charging strategies for
+electric vehicles, and they provide a foundation for future research in this area.
+Further research could explore more complex scenarios, such as varying energy prices, different vehicle types,
+and real-world constraints to enhance the applicability of the learned policies.
 
 
 

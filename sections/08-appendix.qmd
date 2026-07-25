@@ -202,7 +202,7 @@
 
 {{< embed notebooks/08b_NN.ipynb#tbl-nn-accuracy >}}
 
-## Smart Charging with Reinforcement Learning {#app-rl}
+## Smart Charging with Reinforcement Learning {#sec-app-rl}
 
 {{< embed notebooks/09_smart_charging_rl.ipynb#fig-energy-demand-distribution >}}
 
