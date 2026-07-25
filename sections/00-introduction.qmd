@@ -7,11 +7,4 @@ ride-hailing platform in the US. The work is a pilot project as the car company 
 know-how. 
 
 We, Bane & Wayne Partners are a team of data scientists which already have experience 
-in piloting such work. Our goal is to equip the client with the analytical foundation.
-
-This paper uses data of the City of Chicago to perform such an analyses.  First, the 
-data is preprocessed as described in @sec-data-cleaning. Continuing, with descriptive 
-temporal-spatial data analysis in @sec-data-analytics. In a third step, prediction 
-models are developed, assessed and compared to estimate the expected demand depending 
-on environmental, time and spatial parameters in @sec-demand-prediction. Lastly, @sec-rl discusses smart charging and its potential to reduce costs using a reinforcement approach 
-and a learning agent.
+in piloting such work. Our goal is to equip the client with the analytical foundation to scale such a project in the US. The work is structured in four main steps. First, the data is preprocessed (@sec-data-cleaning) to ensure a clean and consistent dataset. Second, descriptive temporal-spatial data analysis (@sec-data-analytics) is performed to understand the data and its characteristics. Third, prediction models (@sec-demand-prediction) are developed to estimate the expected demand depending on environmental, time and spatial parameters. Lastly, smart charging is discussed and its potential to reduce costs using a reinforcement approach and a learning agent in @sec-rl.

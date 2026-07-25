@@ -118,27 +118,27 @@
 
 ## SVR Results
 
-{{< embed notebooks/svr_model.ipynb#fig-svr-train-test-dist >}}
+{{< embed notebooks/08a_SVR.ipynb#fig-svr-train-test-dist >}}
 
-{{< embed notebooks/svr_model.ipynb#tbl-svr-full-grid >}}
+{{< embed notebooks/08a_SVR.ipynb#tbl-svr-full-grid >}}
 
-{{< embed notebooks/svr_model.ipynb#fig-svr-kernel-comparison >}}
+{{< embed notebooks/08a_SVR.ipynb#fig-svr-kernel-comparison >}}
 
-{{< embed notebooks/svr_model.ipynb#fig-svr-error-boxplot >}}
+{{< embed notebooks/08a_SVR.ipynb#fig-svr-error-boxplot >}}
 
-{{< embed notebooks/svr_model.ipynb#tbl-svr-accuracy >}}
+{{< embed notebooks/08a_SVR.ipynb#tbl-svr-accuracy >}}
 
 ## Neural Network Results
 
-{{< embed notebooks/Draft6_AAA_3b.ipynb#fig-nn-spatial-comparison >}}
+{{< embed notebooks/08n_NN.ipynb#fig-nn-spatial-comparison >}}
 
-{{< embed notebooks/Draft6_AAA_3b.ipynb#fig-nn-temporal-comparison >}}
+{{< embed notebooks/08n_NN.ipynb#fig-nn-temporal-comparison >}}
 
-{{< embed notebooks/Draft6_AAA_3b.ipynb#fig-nn-loss-curves >}}
+{{< embed notebooks/08n_NN.ipynb#fig-nn-loss-curves >}}
 
-{{< embed notebooks/Draft6_AAA_3b.ipynb#fig-nn-predicted-vs-actual >}}
+{{< embed notebooks/08n_NN.ipynb#fig-nn-predicted-vs-actual >}}
 
-{{< embed notebooks/Draft6_AAA_3b.ipynb#tbl-nn-accuracy >}}
+{{< embed notebooks/08n_NN.ipynb#tbl-nn-accuracy >}}
 
 ## Smart Charging with Reinforcement Learning {#app-rl}
 
