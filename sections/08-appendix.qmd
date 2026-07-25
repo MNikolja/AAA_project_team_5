@@ -164,22 +164,6 @@
 
 : Full SVR predictive feature set {#tbl-svr-features}
 
-| Phase | Configuration | Kernel | R² | rMAE |
-|---|---|---|---|---|
-| 1: spatial | census_tract 1h | Poly | 0.66 | 1.17 |
-| 1: spatial | community_area 1h | Poly | 0.83 | 0.44 |
-| 2: target enc. | census_tract 1h + TE | Poly | 0.66 | 1.17 |
-| 2: target enc. | census_tract 1h (no TE) | Poly | 0.22 | 1.58 |
-| 2: target enc. | community_area 1h + TE | Poly | 0.83 | 0.44 |
-| 2: target enc. | community_area 1h (no TE) | Poly | 0.83 | 0.68 |
-| 3: transform | community_area 1h normal | Poly | 0.83 | 0.44 |
-| 3: transform | community_area 1h log1p | RBF | 0.83 | 0.40 |
-| 4: temporal | community_area 1h | Poly | 0.83 | 0.44 |
-| 4: temporal | community_area 4h | Poly | 0.88 | 0.39 |
-| 4: temporal | community_area 1d | Poly | 0.93 | 0.23 |
-
-: SVR results across four controlled comparison phases {#tbl-svr-phases}
-
 {{< embed notebooks/08a_SVR.ipynb#fig-svr-train-test-dist >}}
 
 {{< embed notebooks/08a_SVR.ipynb#tbl-svr-full-grid >}}
