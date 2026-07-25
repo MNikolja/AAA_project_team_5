@@ -82,9 +82,8 @@ airport signal in this dataset is essentially an O'Hare signal. For a fleet
 operator this implies supply must be pre-positioned at O'Hare and downtown, and
 that vehicles will tend to accumulate downtown-bound out of the airport and need
 active rebalancing back. The census-tract equivalent (@fig-demand-spatial-tract)
-resolves both poles into individual tracts and reproduces the same O'Hare
-asymmetry, with the suppressed periphery emptier still, consistent with the
-coverage gap described above.
+reproduces the same O'Hare asymmetry, with the suppressed periphery emptier still,
+consistent with the coverage gap described above.
 
 A hotspot analysis quantifies this picture. Fitting a Gaussian Mixture Model
 (GMM) to the pickup and dropoff coordinates, with the number of components
@@ -92,8 +91,7 @@ chosen by AIC (K = 14 pickups, K = 15 dropoffs) and cross-checked against a
 kernel density estimate, decomposes demand into named, ranked components
 (@fig-kde-hotspots, @fig-gmm-hotspots, @tbl-hotspot-ranking). Near North Side
 (22.2 % of pickups) and the Loop (21.2 %) are the two largest pickup
-components, while the Loop alone accounts for 26.1 % of dropoffs. O'Hare
-splits into two adjacent components jointly holding 21.2 % of pickups but
+components. O'Hare splits into two adjacent components jointly holding 21.2 % of pickups but
 only 4.7 % of dropoffs, giving the pickup-heavy airport asymmetry a concrete
 figure. Because the GMM is a soft-clustering model, it also shows where this
 structure blurs: 18.1 % of pickup points and 22.5 % of dropoff points cannot
@@ -104,7 +102,7 @@ rule would miss.
 
 Understanding the temporal distrubution, several things are noteworthy.
 Collapsing the spatial dimension and keeping time
-(@fig-hourly-demand) reveals a sharp diurnal cycle: demand is negligible
+(@fig-hourly-demand) reveals a daily cycle: demand is negligible
 overnight, ramps up steeply from around 05:00, and peaks at 17:00 before
 declining into the night. Pickup and dropoff curves almost coincide; the small
 lead–lag between them is merely trip duration shifting dropoffs into slightly
@@ -117,18 +115,14 @@ O'Hare (airport and business-travel) pole while downtown activity holds up,
 consistent with a shift from business to leisure travel. Sunday then recovers the
 airport component as travellers return. Seasonally (@fig-month-demand) the
 spatial structure is invariant, but overall volume varies over the year.
-Collapsing space and keeping time, as for the hourly view, quantifies this
-precisely: the monthly total (@fig-monthly-demand) confirms December as the
-year's low nt. Finally, the demand geography is remarkably 
+The monthly total confirms December as the
+year's low (@fig-monthly-demand). Finally, the demand geography is rather 
 robust on public holidays (@fig-holiday-demand): the airport and downtown poles
 persist across all four holiday flags, so atypical calendar days rescale demand
 rather than relocating it. All of these patterns hold essentially unchanged at
 census-tract resolution (@fig-hourly-demand-tract, @fig-block-demand-tract,
 @fig-dow-demand-tract, @fig-month-demand-tract,
-@fig-holiday-demand-tract): the hourly and monthly curves are identical, since
-collapsing the spatial dimension erases any difference between the two units,
-while the block, weekday, monthly and holiday maps merely resolve the same two
-poles into finer tracts, with the suppressed periphery going emptier still.
+@fig-holiday-demand-tract).
 
 Averaging trip attributes per area separates the
 features into two clean groups. The weather variables (temperature, precipitation,

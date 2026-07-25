@@ -1,21 +1,21 @@
-# Improve Smart Charging Using Reinforcement Learning {#sec-rl}
+# Smart Charging Using Reinforcement Learning {#sec-rl}
 Another request from the project team was to improve the smart charging of an electric vehicle (EV) taxi using Reinforcement Learning (RL). The goal is to minimize the total recharging cost while ensuring that the EV has enough energy for its work after departure. 
 
 The primary goal is to develop a Reinforcement Learning (RL) agent to manage the home charging of an electric vehicle (EV) taxi. The agent's objective is to minimize the total recharging cost while ensuring the taxi has enough energy for its work after departure. The scenario involves an EV taxi that is charged at home between 2 p.m. and 4 p.m. daily, with the agent making decisions on the charging power in 15-minute intervals. The recharging costs increase exponentially with the charging power, and a high penalty is applied if the EV runs out of energy, making this the worst-case scenario to avoid. The vehicle's battery has a fixed capacity that cannot be exceeded.
 
 ## Assumptions
 The following assumptions were made to define the problem scope fully:
-- The EV's battery has a 60 kWh capacity[@bmw_electric_models][@opel_electric_models].
-- The EV arrives home with many different states of charge (SoC) but the never completly empty, therefore a minimum SoC of 0.5 kWh is assumed.
-- To prevent extremely high unrealistic costs, the power in the cost function is normalized by the maximum power (22 kW).
-- The actual amount of energy charged in a step is determined by both the charging speed and the available battery capacity, and this value is used for the cost calculation.
+The EV's battery has a 60 kWh capacity[@bmw_electric_models][@opel_electric_models].
+The EV arrives home with many different states of charge (SoC) but the never completly empty, therefore a minimum SoC of 0.5 kWh is assumed.
+To prevent extremely high unrealistic costs, the power in the cost function is normalized by the maximum power (22 kW).
+The actual amount of energy charged in a step is determined by both the charging speed and the available battery capacity, and this value is used for the cost calculation.
 
 ## Simulation Environment and Markov Decision Process (MDP) Formulation
 A discrete event simulation is created to model the charging environment, which is then formalized as a Markov Decision Process (MDP):
-- State ($s_t$): The state is a tuple of the current time step and the battery's state of charge (SoC), i.e., (t, soc_t).
-- Actions ($a_t$): The agent can choose from a discrete set of charging power levels: {0.0, 4.4, 8.8, 13.2, 17.6, 22.0} kW.
-- Transitions: The battery's SoC is updated at each step based on the chosen power, the time interval (0.25h), and the remaining capacity.
-- Reward ($r_t$): The reward is the negative of the charging cost. At the final step (4 p.m.), a large penalty is subtracted from the reward if the final SoC is less than the stochastic energy demand for the upcoming trip.
+State ($s_t$): The state is a tuple of the current time step and the battery's state of charge (SoC), i.e., (t, soc_t).
+Actions ($a_t$): The agent can choose from a discrete set of charging power levels: {0.0, 4.4, 8.8, 13.2, 17.6, 22.0} kW.
+Transitions: The battery's SoC is updated at each step based on the chosen power, the time interval (0.25h), and the remaining capacity.
+Reward ($r_t$): The reward is the negative of the charging cost. At the final step (4 p.m.), a large penalty is subtracted from the reward if the final SoC is less than the stochastic energy demand for the upcoming trip.
 
 The energy demand for the next trip is simulated by drawning from a normal distribution (μ=30 kWh, σ=5 kWh) upon departure. The EV's state of charge upon arrival at 2 p.m. is also drawn from a normal distribution (μ=20 kWh, σ=5 kWh). Both distributions are shown in @app-rl in @fig-energy-demand-distribution and @fig-recharging-cost.
 These distributions introduce stochasticity into the environment, making it more realistic and challenging for the RL agent to learn an effective charging strategy. The agent must learn to balance the trade-off between minimizing costs and ensuring sufficient energy for the next trip, taking into account the uncertainty in energy demand and initial SoC.

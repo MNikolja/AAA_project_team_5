@@ -2,9 +2,14 @@
 There are many recent trends in the smart mobility industry such as electrification, 
 autonomous driving and ride-hailing. In particular the last trend in combination with 
 an electric fleet which optimal operates autonomously is the subject of this work. 
-Commissioned by a renowned German car company this work analyses the potential of such a 
-ride-hailing platform in the US. The work is a pilot project as the car company lacks in 
-know-how. 
+A renowned German car company plans to enter the US market with such a platform, but lacks the strategic know-how to operate an electric fleet. Commissioned as a pilot study, we, Bane & Wayne Partners, analyse the temporal and spatial patterns of ride-hailing trips for a representative US city and translate them into operational recommendations.
 
-We, Bane & Wayne Partners are a team of data scientists which already have experience 
-in piloting such work. Our goal is to equip the client with the analytical foundation to scale such a project in the US. The work is structured in four main steps. First, the data is preprocessed (@sec-data-cleaning) to ensure a clean and consistent dataset. Second, descriptive temporal-spatial data analysis (@sec-data-analytics) is performed to understand the data and its characteristics. Third, prediction models (@sec-demand-prediction) are developed to estimate the expected demand depending on environmental, time and spatial parameters. Lastly, smart charging is discussed and its potential to reduce costs using a reinforcement approach and a learning agent in @sec-rl.
+The analysis is guided by three questions: (i) Where and when does demand arise and at which spatial and temporal resultion can a fleet realistically be managed? (ii) Can this demand be predicted from calendar, weather and location information alone, and does a deep learning approach justify its additional complexity? (iii) Can home charging of an electric taxi be optimized to reduce costs and ensure that the vehicle is ready for the next trip? 
+
+The analysis is based on a dataset of ride-hailing trips in Chicago (2024-2026 (ongoing)), which is publicly available and contains information about the trip start and end time, location, distance, duration, and more. The work proceeds in five steps:
+
+1. Data cleaning and preprocessing to ensure a clean and consistent dataset (@sec-data-cleaning)
+2. Descriptive temporal-spatial data analysis to understand the data and its characteristics (@sec-data-analytics)
+3. Prediction models to estimate the expected demand depending on environmental, time and spatial parameters (@sec-demand-prediction)
+4. Smart charging and its potential to reduce costs using a reinforcement approach and a learning agent (@sec-rl)
+5. Discussion of the implications of the results for the potential fleet operator and recommendations for future work (@sec-discussion-outlook)

@@ -1,8 +1,22 @@
+{{< pagebreak >}}
+
 ```{=latex}
 \appendix
 ```
 
 # Appendix {#sec-appendix}
+
+| Dataset | What is the data about | Reason for inclusion |
+|---|---|---|
+| Holidays [@workingdays_holidays] | City, state, bank, and corporate holidays, including the day of the week | Different holiday types affect different rider groups, and trip behavior varies by weekday/weekend |
+| Weather[^weather-note] [@open_meteo_weather] | Hourly temperature, rain, snowfall, and wind speed for Chicago | Captures day/night and seasonal weather effects on demand at an hourly resolution matching the trip data |
+| Points of Interest [@openstreetmap] | Counts of 8 POI categories (healthcare, education, public services, tourism, nature, amenity, leisure, shops) per census tract and community area | Explains the purpose/attractiveness of a location, helping the model learn location-specific demand patterns |
+| Community area / census tract boundaries [@chicago_community_areas] | Polygon boundaries of Chicago's community areas | Used to compute community area centroid coordinates as a spatial feature |
+
+: Additional data sources {#tbl-additional-data-sources}
+
+[^weather-note]: We decided for a different weather data source to have hourly data.
+
 
 ## Spatial Unit Analysis figures
 
@@ -113,6 +127,39 @@
 {{< embed notebooks/02_other_data_sources.ipynb#fig-trips-strong-rain >}}
 {{< embed notebooks/02_other_data_sources.ipynb#fig-trips-wind >}}
 {{< embed notebooks/02_other_data_sources.ipynb#fig-trips-strong-wind >}}
+
+## SVR Feature Set {#sec-app-svr-features}
+
+@tbl-svr-features lists the input features used by the SVR models. Cyclic temporal features and the point-of-interest counts are used at every temporal resolution except the daily bin, where `hour_sin` / `hour_cos` are dropped since an hour-of-day signal is meaningless when every basket spans a full day. The target-encoding feature `spatial_target_mean` is only included in configurations where target encoding is enabled, which includes the final selected SVR (community areas, 4h resolution).
+
+| Category | Feature(s) | Description |
+|---|---|---|
+| Temporal (cyclic) | `hour_sin`, `hour_cos`, `month_sin`, `month_cos` | Sine/cosine encoding of hour-of-day and month-of-year, avoiding a false linear ordering of cyclic time |
+| Day of week | `DayOfWeek_Tuesday`, `DayOfWeek_Wednesday`, `DayOfWeek_Thursday`, `DayOfWeek_Friday`, `DayOfWeek_Saturday`, `DayOfWeek_Sunday` | One-hot encoded weekday (Monday is the reference category) |
+| Holidays | `BankHoliday`, `CorporateHoliday`, `CityHoliday`, `StateHoliday` | Binary flags for different holiday types, which affect rider groups differently |
+| Weather (binary) | `rain`, `strong_rain`, `snow`, `wind`, `strong_wind` | Discretized weather conditions for the bucket |
+| Weather (continuous) | `temperature_c`, `temperature_max_c`, `temperature_min_c` | Mean, max, and min temperature for the bucket |
+| Points of interest | `healthcare`, `education`, `amenity`, `leisure`, `shops`, `public_services`, `tourism`, `nature` | Counts of each POI category within the spatial unit |
+| Spatial | `centroid_lat`, `centroid_lon` | Centroid coordinates of the spatial unit, letting the model learn geographic proximity |
+| Target encoding | `spatial_target_mean` | Mean trip count per spatial unit, computed on the training set only (included only when target encoding is enabled) |
+
+: Full SVR feature set {#tbl-svr-features}
+
+| Phase | Configuration | Kernel | R² | rMAE |
+|---|---|---|---|---|
+| 1: spatial | census_tract 1h | Poly | 0.66 | 1.17 |
+| 1: spatial | community_area 1h | Poly | 0.83 | 0.44 |
+| 2: target enc. | census_tract 1h + TE | Poly | 0.66 | 1.17 |
+| 2: target enc. | census_tract 1h (no TE) | Poly | 0.22 | 1.58 |
+| 2: target enc. | community_area 1h + TE | Poly | 0.83 | 0.44 |
+| 2: target enc. | community_area 1h (no TE) | Poly | 0.83 | 0.68 |
+| 3: transform | community_area 1h normal | Poly | 0.83 | 0.44 |
+| 3: transform | community_area 1h log1p | RBF | 0.83 | 0.40 |
+| 4: temporal | community_area 1h | Poly | 0.83 | 0.44 |
+| 4: temporal | community_area 4h | Poly | 0.88 | 0.39 |
+| 4: temporal | community_area 1d | Poly | 0.93 | 0.23 |
+
+: SVR results across four controlled comparison phases {#tbl-svr-phases}
 
 ## SVR Results
 

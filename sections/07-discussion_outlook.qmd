@@ -1,5 +1,8 @@
-# Conclusion
-
+# Conclusion  {#sec-discussion-outlook}
+Discussion	&	Outlook:	Discuss	the	implications	of	your	results	for	the	potential	fleet	operator (client).	
+Which	further	analysis	would	you	consider	useful	and	could	be	conducted	on	the	given	dataset? Which	
+other	external	data	sources	might	be	interesting	 to	consider? Is	it	sensible	 to	install	private	charging	
+stations,	or	should	the	operator	draw	on	public	charging	stations?
 ## Summary
 
 ## Discussion & Limitations
@@ -7,6 +10,7 @@
 - Static values for the POI are a limitation. They might already be included in the target variable but we decided to keep them, as they may help the model to correlate between similar census tracts/ community area
 - Spatial Limitation for census tract: only has half of the data
 - Census tract is missing in most of the records, therefore it gets filled by 0s which improve the prediction in this context
-- CEnsus tract might have changed
+- Census tract might have changed
 - Demand might not be accurate due to removing of records, especially for the census tracts
+- Coordinates are centroids and not exact locations
 ## Future work
