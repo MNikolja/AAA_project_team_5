@@ -19,6 +19,7 @@ date: 2026-07-26 # Date of submission
 
 {{< include sections/Declaration.qmd >}}
 
+{{< include sections/Executive-Summary.qmd >}}
 
 <!-- While you could use \clearpage or \newpage, this is the recommended way to insert a page break in Quarto as it translates to the native page break command for the output format you are using (e.g., \clearpage for PDF, <div style="page-break-after: always;"></div> for HTML). -->
 {{< pagebreak >}}
