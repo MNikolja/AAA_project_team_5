@@ -159,17 +159,7 @@ dropoff) that fall within the area.
 @fig-poi-demand shows a strong positive association on a log-log scale: areas
 richer in points of interest handle markedly more taxi trips, with the three
 busiest areas, the Near North Side, the Loop and O'Hare, sitting in the
-top-right corner. The rank correlation is high (Spearman $\rho = 0.79$), and the
-log-log Pearson correlation is even higher ($r = 0.85$), confirming that the
-relationship is close to a straight power law across all 77 areas rather than
-being driven by a few downtown outliers. In plain terms, roughly each tenfold
-increase in POI count comes with a comparable rise in taxi activity. The main
-exception is O'Hare, which generates far more trips than its moderate on-site POI
-count alone would predict, an airport effect rather than a neighbourhood-amenity
-effect, while a cluster of POI-sparse outer areas at the lower-left sustains only
-light, corridor-driven traffic.
-
-The conclusion is twofold. Descriptively, POI density offers an intuitive,
+top-right corner. The main conclusion is that, descriptively, POI density offers an intuitive,
 non-technical explanation for the demand hot spots a fleet operator would care
 about. Practically, this correlation is what justifies carrying POI density
 forward as an engineered feature in the predictive models, rather than
