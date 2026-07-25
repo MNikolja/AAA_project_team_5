@@ -30,8 +30,7 @@ the privacy suppression would produce.
 
 An alternative to the administrative units is a regular H3 hexagon grid,
 which gives equal-area cells independent of the political boundaries.
-Overlaying the trip endpoints on H3 grids at four resolutions
-(@fig-hex-grids), with the community-area boundaries added for reference
+Overlaying the trip endpoints on H3 grids at four resolutions, with the community-area boundaries added for reference
 (@fig-hex-community), shows that because the coordinates are a limited set
 of centroids rather than continuous GPS points, a large share of the
 hexagons contain no points at all, especially at the finer resolutions

@@ -10,8 +10,6 @@
 
 {{< embed notebooks/05_spatial_data_exploration.ipynb#fig-coords-tract >}}
 
-{{< embed notebooks/05_spatial_data_exploration.ipynb#fig-hex-grids >}}
-
 {{< embed notebooks/05_spatial_data_exploration.ipynb#fig-hex-community >}}
 
 {{< embed notebooks/05_spatial_data_exploration.ipynb#fig-areal-weighted >}}
@@ -130,27 +128,27 @@
 
 ## Neural Network Results
 
-{{< embed notebooks/08n_NN.ipynb#fig-nn-spatial-comparison >}}
+{{< embed notebooks/08b_NN.ipynb#fig-nn-spatial-comparison >}}
 
-{{< embed notebooks/08n_NN.ipynb#fig-nn-temporal-comparison >}}
+{{< embed notebooks/08b_NN.ipynb#fig-nn-temporal-comparison >}}
 
-{{< embed notebooks/08n_NN.ipynb#fig-nn-loss-curves >}}
+{{< embed notebooks/08b_NN.ipynb#fig-nn-loss-curves >}}
 
-{{< embed notebooks/08n_NN.ipynb#fig-nn-predicted-vs-actual >}}
+{{< embed notebooks/08b_NN.ipynb#fig-nn-predicted-vs-actual >}}
 
-{{< embed notebooks/08n_NN.ipynb#tbl-nn-accuracy >}}
+{{< embed notebooks/08b_NN.ipynb#tbl-nn-accuracy >}}
 
 ## Smart Charging with Reinforcement Learning {#app-rl}
 
-{{< embed notebooks/08_smart_charging_rl.ipynb#fig-energy-demand-distribution >}}
+{{< embed notebooks/09_smart_charging_rl.ipynb#fig-energy-demand-distribution >}}
 
-{{< embed notebooks/08_smart_charging_rl.ipynb#fig-recharging-cost >}}
+{{< embed notebooks/09_smart_charging_rl.ipynb#fig-recharging-cost >}}
 
-{{< embed notebooks/08_smart_charging_rl.ipynb#fig-learning-curves >}}
+{{< embed notebooks/09_smart_charging_rl.ipynb#fig-learning-curves >}}
 
-{{< embed notebooks/08_smart_charging_rl.ipynb#fig-shortfall-share >}}
+{{< embed notebooks/09_smart_charging_rl.ipynb#fig-shortfall-share >}}
 
-{{< embed notebooks/08_smart_charging_rl.ipynb#fig-charging-power-distribution >}}
+{{< embed notebooks/09_smart_charging_rl.ipynb#fig-charging-power-distribution >}}
 
-{{< embed notebooks/08_smart_charging_rl.ipynb#fig-final-soc-distribution >}}
+{{< embed notebooks/09_smart_charging_rl.ipynb#fig-final-soc-distribution >}}
 
