@@ -47,7 +47,7 @@ Anything you run outside the notebooks should be prefixed with `uv run`, e.g.
 The raw input folder is **not** in the repository due to the size.
 Download it from the onedrive link below and unpack it into `data/00/` so that the paths below exist:
 
-> **OneDrive:** `<PASTE ONEDRIVE LINK HERE>`
+> **OneDrive:** `https://1drv.ms/u/c/2b600f51f0f0fd46/IQDTGwJbPJALR6alcWcGyUHpAThhNn4_WZTpIjlnzZfcBnM?e=9Iketp`
 
 ```
 data/00/

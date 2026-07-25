@@ -74,3 +74,4 @@ notebooks/.cache.sqlite
 data/00/tl_2025_17_tract/*
 *.geojson
 *.csv
+*.parquet
