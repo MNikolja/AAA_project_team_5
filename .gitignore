@@ -28,7 +28,7 @@ _freeze/
 *.blg
 *.run.xml
 *-blx.bib
-
+.*csv
 # Python
 .venv/
 __pycache__/
@@ -41,12 +41,6 @@ __pycache__/
 .mypy_cache/
 
 #data
-data/01/*
-data/02/*
-data/03/*
-data/04/*
-data/05/*
-data/*
 
 *.joblib
 *.cache.sqlite
@@ -61,8 +55,6 @@ CLAUDE.md
 .windsurf/
 
 # Data
-data/
-
 # OS specific
 .DS_Store
 Thumbs.db
@@ -79,3 +71,6 @@ notebooks/01_data_cleaning.bcf
 notebooks/.cache.sqlite
 docs/report.pdf
 notebooks/.cache.sqlite
+data/00/tl_2025_17_tract/*
+*.geojson
+*.csv
