@@ -1,77 +1,30 @@
 # Data Analytics {#sec-data-analytics}
 
 ## Spatial Unit Analysis
+This section tries to answer: (i) Where and when does demand arise and at which spatial and temporal resolution can a fleet realistically be managed? In addition, it tries to generate further information usable for the ride-hailing platform and the fleet operator.
 
-Every trip carries its location in three encodings, separately for pickup
-and dropoff: a community area (the 77 official Chicago community areas), a tract (~800 tracts),
-and a latitude/longitude coordinate pair. The data providers already document two caveats.
-The census tract may be blank for privacy reasons, and the latitude/longitude is the centroid
-of the census tract, or the centroid of the community area when the tract is suppressed [@chicago_privacy_story].
-The coordinate is therefore not a raw GPS fix but a centroid whose true resolution depends
-on whether the tract survived anonymisation. In this section, we outline the pyhsical distribution of the coordinates
-and therfore of the trips, in order to argue for our unit of analysis for demand prediction.
+The data set contains three different spatial encodings for each trip: a community area, a census tract, and a latitude/longitude coordinate pair. Chicago has 77 official community areas and approximately 800 census tracts while only 473 have valid trip start locations. The community area is a coarse administrative unit, while the census tract is a finer unit. The latitude/longitude coordinate is the centroid of the census tract or, if the tract is suppressed for privacy reasons[@chicago_privacy_story], the centroid of the community area. Scattering every coordinate over the community areas (@fig-coords-community) and over the census tracts (@fig-coords-tract) shows that in the centre of the city the points sit at census tract centroids, resolving fine detail, whereas on the outskirts they collapse onto a sparser set of community area centroids, exactly the pattern the privacy suppression would produce. The privacy suppression is therefore a real limitation for the spatial resolution of the data, and it is not possible to recover the original coordinates. The community area is therefore the most complete (missing only about 7 % of dropoffs) and reliable spatial encoding, while the census tract is only available for less than half of the trips. The coordinate is always present, but it is a centroid rather than a true GPS point, so it does not provide any additional spatial resolution beyond the community area or census tract.
 
-First we conduct a short missingness and consistency check, which gives us three key findings.
-First, the census tract is missing for roughly 55 % of trips, while
-the community area is essentially complete (missing only about 7 % of dropoffs),
-so location is almost always known at community-area resolution but only sometimes
-at tract resolution. Second, the encodings nest cleanly: every coordinate maps to
-exactly one community area and one census tract, and every tract to exactly one community
-area. Third, because the coordinate is a centroid we can recover which level it
-represents per trip, and the split is almost even, with about 45 % of trips
-resolved at census-tract level and 55 % only at community-area level.
+An alternative to the administrative units is a regular H3 hexagon grid which are equal-sized hexagonial area cells independet of the political boundaries. They can be set in different sizes, the higher the resolution, the smaller the cells become. 
+There are two ways to fill such a grid, and the centroid encoding is in conflict with both. The direct approach assigns each trip endpoint to the hexagon it falls into. Because the coordinates are a small set of repeated centroids rather than continuous GPS points, the trips pile up on the few cells that happen to contain a centroid and leave the rest empty, increasingly so at finer resolutions and towards the city edge (@fig-hex-community). The alternative is areal interpolation in which the endpoints per community area is distributed across the hexagons in proportion to their geometric overlap. This preserves essentially all endpoints (@fig-areal-weighted), but only by assuming that trips are spread uniformly within a community area, which flattens the outskirts into an artificial homogeneity and blurs where activity actually concentrates.
 
-This pattern is visible geographically. Scattering every coordinate over the
-community areas (@fig-coords-community) and over the census tracts
-(@fig-coords-tract) shows that in the centre of the city the points sit at
-census-tract centroids, resolving fine detail, whereas on the outskirts they
-collapse onto a sparser set of community-area centroids, exactly the pattern
-the privacy suppression would produce.
+Neither variant therefore adds spatial information that the centroids do not already carry: the raw grid inherits their sparsity, and the interpolated grid merely replaces that sparsity with a modelling assumption.
 
-An alternative to the administrative units is a regular H3 hexagon grid,
-which gives equal-area cells independent of the political boundaries.
-Overlaying the trip endpoints on H3 grids at four resolutions, with the community-area boundaries added for reference
-(@fig-hex-community), shows that because the coordinates are a limited set
-of centroids rather than continuous GPS points, a large share of the
-hexagons contain no points at all, especially at the finer resolutions
-and towards the city edge. A raw hexagon binning of the coordinates
-would therefore be dominated by empty cells.
+Comparing the areal-weighted hexagons against the raw community area counts (@fig-trips-community) makes the trade-off concrete. The areal weighting smoothes the trips out, most notably in the airport area in the north west. Therfore, the community area choropleth is a direct, real-world measure of activity that introduces no modelling assumption. In addition, the census tract choropleth (@fig-trips-tract)
+offers finer detail but confirms that the outskirts are barely covered, because many trips only provide a community area location, similarly to finer hexagon representation without areal weighting. 
 
-To bridge the two tilings we tested areal interpolation: count trip
-endpoints per community area, then distribute each area's count onto the
-hexagons in proportion to their geometric overlap. This conserves essentially
-all of the endpoints (@fig-areal-weighted), but
-it smooths the data, because trips are assumed uniform within each community
-area, so the outskirts become artificially homogeneous and the real
-concentration of activity is blurred.
+Therefore, the community area is adopted as the primary spatial unit for the descriptive analysis, as it is complete, internally consistent with the finer encodings, and free of both the smoothing artefacts of areal weighting and the empty-cell sparsity of a raw hexagon grid. Where finer resolution is genuinely available and useful, the census tract remains a secondary view, taking into account that only half of the data can be used for this and that analysis are less accurate.
 
-Comparing the areal-weighted hexagons against the raw community-area counts
-(@fig-trips-community) makes the trade-off concrete. The areal weighting
-smoothes the trips out, most notably in the airport area in the north west.
-Therfore, the community-area choropleth is a direct, real-world measure of activity that introduces no
-modelling assumption. In addition, the census-tract choropleth (@fig-trips-tract)
-offers finer detail but confirms that the outskirts are barely covered,
-because those trips only ever carried a community-area location, similarly to finer
-hexagon representation without areal weighting. We therefore
-adopt the community area as the primary spatial unit for the descriptive
-analysis, as it is complete, internally consistent with the finer encodings,
-and free of both the smoothing artefacts of areal weighting and the empty-cell
-sparsity of a raw hexagon grid. Where finer resolution is genuinely available
-and useful, the census tract remains a secondary view. In terms of fleet managmenet
-the community area demand is a valuable metric to orchestrate the amount of taxis needed
-in a certain area, with predictions being accurate enough and within a reasonably sized area
+In terms of fleet managmenet the community area demand is a valuable metric to orchestrate the amount of taxis needed in a certain area, with predictions being accurate enough and within a reasonably sized area
 for taxis to operate in.
 
 ## Spatial and temporal demand patterns {#sec-spatial-temporal-demand-patterns}
 
-Taking the community area as our main spatial unit, we now characterise how demand
-varies across space and time for this unit. All maps in this part are drawn as paired
-choropleths, with pickups on the left and dropoffs on the right, so in addition to the
-volume, the direction of demand is visible.
+Taking the community area as our main spatial unit,the following section explores how demand varies across space and time for this unit. All maps in this part are drawn as paired choropleths, with pickups on the left and dropoffs on the right, so in addition to the volume, the direction of demand is visible.
 
-First, we can see how demand concentrates over the community areas with espacially high
-trip volumes at O'Hare International Airport in the far north-west and the downtown
-lakefront cluster (@fig-trips-community). The remainder of the city is close to empty by comparison.
+
+It can be seen that demand is highly concentrated to a few areas, with the O'Hare airport in the north-west and the downtown core in the centre of the city being the two main poles as seen in @fig-trips-community.
+The remainder of the city is close to empty by comparison.
 The paired map (@fig-demand-spatial) also exposes a
 asymmetry at O'Hare airport, being near-maximal as a source of pickups but
 only moderate as a dropoff destination, suggesting that arriving air passengers take taxis away
@@ -81,7 +34,7 @@ Midway, the city's second airport to the south-west, barely registers, so the
 airport signal in this dataset is essentially an O'Hare signal. For a fleet
 operator this implies supply must be pre-positioned at O'Hare and downtown, and
 that vehicles will tend to accumulate downtown-bound out of the airport and need
-active rebalancing back. The census-tract equivalent (@fig-demand-spatial-tract)
+active rebalancing back. The census tract equivalent (@fig-demand-spatial-tract)
 reproduces the same O'Hare asymmetry, with the suppressed periphery emptier still,
 consistent with the coverage gap described above.
 
@@ -103,8 +56,8 @@ rule would miss.
 Understanding the temporal distrubution, several things are noteworthy.
 Collapsing the spatial dimension and keeping time
 (@fig-hourly-demand) reveals a daily cycle: demand is negligible
-overnight, ramps up steeply from around 05:00, and peaks at 17:00 before
-declining into the night. Pickup and dropoff curves almost coincide; the small
+overnight, increases steeply from around 05:00, and peaks at 17:00 before
+declining into the night. Pickup and dropoff curves almost coincide as the small
 lead–lag between them is merely trip duration shifting dropoffs into slightly
 later hours, not a strong directional commuting effect. The 8-hour-block maps
 (@fig-block-demand) place this in space: the overnight block (00:00–07:59) is
@@ -118,9 +71,9 @@ spatial structure is invariant, but overall volume varies over the year.
 The monthly total confirms December as the
 year's low (@fig-monthly-demand). Finally, the demand geography is rather 
 robust on public holidays (@fig-holiday-demand): the airport and downtown poles
-persist across all four holiday flags, so atypical calendar days rescale demand
+persist across all four holiday flags, so typical calendar days rescale demand
 rather than relocating it. All of these patterns hold essentially unchanged at
-census-tract resolution (@fig-hourly-demand-tract, @fig-block-demand-tract,
+census tract resolution (@fig-hourly-demand-tract, @fig-block-demand-tract,
 @fig-dow-demand-tract, @fig-month-demand-tract,
 @fig-holiday-demand-tract).
 
@@ -136,27 +89,12 @@ directions with short, cheap, slow trips in downtown versus long, expensive, fas
 from the edges and the airport. For an electric fleet this gradient is doubly
 relevant as peripheral and airport trips are not only higher-revenue but also
 higher-energy comsuming, with direct implications for vehicle range and charging strategy.
-The same gradient holds at census-tract resolution (@fig-feature-gradient-tract),
-confirming it is not an artefact of community-area aggregation. The full
+The same gradient holds at census tract resolution (@fig-feature-gradient-tract),
+confirming it is not an artefact of community area aggregation. The full
 19-feature grid at both resolutions, and the day-of-week, block, month and
 holiday maps, are provided in Appendix -@sec-appendix.
 
-Finally, we outline the effect of points of interest (POI) on the demand.
-The urban-mobility literature treats POI as a strong driver
-of where taxi demand arises. We test whether that holds for Chicago before
-committing to POI as a modelling input. For each of the 77 community areas we
-sum the eight POI categories (healthcare, education, amenity, leisure, shops,
-public services, tourism, nature) into a single density measure and plot it
-against taxi activity, measured as the number of trip endpoints (pickup plus
-dropoff) that fall within the area.
-
-@fig-poi-demand shows a strong positive association on a log-log scale: areas
-richer in points of interest handle markedly more taxi trips, with the three
-busiest areas, the Near North Side, the Loop and O'Hare, sitting in the
-top-right corner. The main conclusion is that, descriptively, POI density offers an intuitive,
-non-technical explanation for the demand hot spots a fleet operator would care
-about. Practically, this correlation is what justifies carrying POI density
-forward as an engineered feature in the predictive models, rather than
-leaving it as a standalone map. The full per-category maps, at both census-tract
-and community-area resolution, are provided in Appendix -@sec-appendix (@fig-poi-tract,
-@fig-poi-community).
+Lastly, we examine points of interest (POI) as an explanation for *why* demand sits where it does. In previous projects and research, it became clear that POIs are a high influential factor affecting custoemrs of urban mobility. POI data characterise an area regarding its amenities and services and therfore may explain why people travel to certain areas. In the context of a ride-hailing platform, POI data can be used to understand the demand patterns and to predict future demand based on the presence of certain types of POIs.
+Before adopting POI as a model input, we verify that the same relationship holds in Chicago. For each of the 77 community areas we sum the eight POI categories (healthcare, education, amenity, leisure, shops, public services, tourism, nature) into a single density measure and plot it against taxi activity, measured as the trip endpoints (pickups plus dropoffs) falling within the area. 
+The relationship is clearly positive as the three busiest areas show a strong correlation as seen in @fig-poi-demand. The three busiest areas, the Near North Side, the Loop and O'Hare, are in the top-right corner of the plot. Two conclusions can be made: (i) POI density is an explanatory factor for taxi demand due to the concentration of places worth travelling to, and (ii) POI density is a useful engineered feature for predictive modelling, as it carries genuine signal about a location. The full per-category maps, at both census tract and community area resolution, are provided in Appendix -@sec-appendix (@fig-poi-tract, @fig-poi-community).
+One drawback is that the POI snapshot is static, so it can explain where demand is high but not how that changes over time. The association is also correlational, since POI density and taxi demand are both consequences of how the city is built.
