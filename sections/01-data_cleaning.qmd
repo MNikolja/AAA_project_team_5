@@ -32,9 +32,20 @@ some precision for later performance increase. Furthermore, the point-of-interes
 Lastly we used the community area and census tract boundaries to compute the centroid coordinates for each spatial unit. These coordinates are later used as additional features in the prediction models, providing a spatial reference for each area. This enables the models to learn spatial relationships and patterns in demand across different locations in Chicago.
 
 \textbf{Aggregation and Data Preparation for NN and SVM: }
-The final step is to aggregate the data to a level that can be used for the prediction models, as these models do not work on individual trips but on aggregated demand per time bucket and spatial unit. The aggregation is done for both census tract and community area at three different temporal resolutions: hourly, 4-hourly, and daily. This results in six different datasets, each representing a unique combination of spatial and temporal granularity. The resulting number of records for each dataset is shown in @tbl-aggregation-records in Appendix -@sec-app-aggregation-tables. Temporal-spatial buckets with no trips are filled with a demand of zero to ensure that the models can learn from both high and low demand periods.
+The final step is to aggregate the data to a level that can be used for the prediction models, as these models do not
+work on individual trips but on aggregated demand per time bucket and spatial unit. The aggregation is done for both
+census tract and community area at three different temporal resolutions: hourly, 4-hourly, and daily. This results in
+six different datasets, each representing a unique combination of spatial and temporal granularity. The resulting number
+of records for each dataset is shown in @tbl-aggregation-records in Appendix -@sec-app-aggregation-tables. Temporal-spatial
+buckets with no trips are filled with a demand of zero to ensure that the models can learn from both high and low demand periods.
 
-It must be noted, that while the community area can use the whole dataset, the census tract aggregation is quite limited due to the privacy protection of the City of Chicago, which suppresses census tract information for trips in low-frequency census tracts [@chicago_privacy_story]. This results in a significant reduction of usable records for the census tract aggregation, especially for low demand areas or during low demand periods. This limitation is important to consider when interpreting the results of the models, as it may affect the accuracy and generalizability of the predictions for census tracts. The resulting distribution of trip counts per bucket heavily tends towards zero, with the census tract grid being dominated by zero- and low-demand buckets, as shown in @fig-trip-count-dist-census and @fig-trip-count-dist-community in Appendix -@sec-app-trip-count-dist.
+It must be noted, that while the community area can use the whole dataset, the census tract aggregation is quite limited due
+to the privacy protection of the City of Chicago. This results in a significant reduction of usable records for the census
+tract aggregation, especially for low demand areas or during low demand periods. This limitation is important to consider
+when interpreting the results of the models, as it may affect the accuracy and generalizability of the predictions for
+census tracts. The resulting distribution of trip counts per bucket heavily tends towards zero, with the census tract
+grid being dominated by zero- and low-demand buckets, as shown in @fig-trip-count-dist-census and @fig-trip-count-dist-community
+in Appendix -@sec-app-trip-count-dist.
 
 
 Further to the aggregation, additional features are merged into the datasets, including the data highlighted in @tbl-additional-data-sources. Cyclic sin/cos features for hour and month are also engineered to capture temporal patterns in demand and avoid that time features are treated as linear values. The final datasets are then split chronologically into training, validation, and test sets (70/15/15) to prevent data leakage. A MinMaxScaler is fitted on the training set only and applied to the validation and test sets, ensuring that the scaling is based solely on the training data. The fitted scalers are saved to disk for future use in prediction notebooks. The resulting size of each split is shown in @tbl-split-sizes in Appendix -@sec-app-aggregation-tables.

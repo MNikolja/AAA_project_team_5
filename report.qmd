@@ -1,5 +1,5 @@
 ---
-title: "Project Report Template" # Give your report a title
+title: "From Manufacturer to Ride-Hailing Platfor" # Give your report a title
 course: "Advanced Analytics and Applications" # Specify the course name
 team: "05" # Specify your team number
 author:
