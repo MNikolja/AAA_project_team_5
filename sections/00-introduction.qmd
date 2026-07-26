@@ -1,10 +1,10 @@
 # Introduction
 There are many recent trends in the smart mobility industry such as electrification, 
 autonomous driving and ride-hailing. In particular the last trend in combination with 
-an electric fleet which optimal operates autonomously is the subject of this work. 
+an electric fleet which optimally operates autonomously is the subject of this work. 
 A renowned German car company plans to enter the US market with such a platform, but lacks the strategic know-how to operate an electric fleet. Commissioned as a pilot study, we, Bane & Wayne Partners, analyse the temporal and spatial patterns of ride-hailing trips for a representative US city and translate them into operational recommendations.
 
-The analysis is guided by three questions: (i) Where and when does demand arise and at which spatial and temporal resultion can a fleet realistically be managed? (ii) Can this demand be predicted from calendar, weather and location information alone, and does a deep learning approach justify its additional complexity? (iii) Can home charging of an electric taxi be optimized to reduce costs and ensure that the vehicle is ready for the next trip? 
+The analysis is guided by three questions: (i) Where and when does demand arise and at which spatial and temporal resolution can a fleet realistically be managed? (ii) Can this demand be predicted from calendar, weather and location information alone, and does a deep learning approach justify its additional complexity? (iii) Can home charging of an electric taxi be optimized to reduce costs and ensure that the vehicle is ready for the next trip? 
 
 The analysis is based on a dataset of ride-hailing trips in Chicago (2024-2026 (ongoing)), which is publicly available and contains information about the trip start and end time, location, distance, duration, and more. The work proceeds in five steps:
 
@@ -14,6 +14,6 @@ The analysis is based on a dataset of ride-hailing trips in Chicago (2024-2026 (
 4. Smart charging and its potential to reduce costs using a reinforcement approach and a learning agent (@sec-rl)
 5. Discussion of the implications of the results for the potential fleet operator and recommendations for future work (@sec-discussion-outlook)
 
-To see the corresponding section to each of these question in the github repository[^repo], reference @tbl-notebook-overview.
+To see the corresponding section to each of these questions in the github repository[^repo], reference @tbl-notebook-overview.
 
 [^repo]: 'https://github.com/MNikolja/AAA_project_team_5'.
