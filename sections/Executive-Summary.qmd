@@ -9,7 +9,7 @@
 
 - **Where and when:** The downtown core and O'Hare Airport together generate over 60% of pickups; the rest of the city is comparatively quiet. Demand follows a stable daily rhythm, near zero overnight and peaking around 17:00. Chicago's 77 community areas (about 3 square miles each) are the right operating unit: complete and fine enough to act on, unlike census-tract or grid-based alternatives, which are compromised by privacy-driven data suppression.
 
-- **Predictability:** A neural network forecasts demand per community area and four-hour window with an R² of 0.92-0.93, cutting the error of a naive historical-average forecast by roughly 45 % (rMAE 0.17 vs. 0.31). It outperforms a Support Vector Regression benchmark at every finer resolution. This is the model we recommend for production.
+- **Predictability:** A neural network forecasts demand per community area and four-hour window with an R² of 0.93, cutting the error of a naive historical-average forecast by roughly 18 % (nMAE 0.25 vs. 0.31). It outperforms a Support Vector Regression benchmark at every finer resolution. This is the model we recommend for production.
 
 - **Charging economics:** A reinforcement-learning agent that sets charging power in 15-minute increments during the home-charging window cuts electricity cost by roughly 50 % against a naive full-charge strategy, with a next-trip energy shortfall in only 0.14 % of test cases.
 
