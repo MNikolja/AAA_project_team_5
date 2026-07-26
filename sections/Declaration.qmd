@@ -1,7 +1,7 @@
 {{< pagebreak >}}
 \thispagestyle{empty}
 
-\section*{Decleration of generative AI}
+\section*{Declaration of generative AI}
 
 During the preparation of this work, the authors used generative AI in order to improve language and readability, as well as to help with simple coding tasks.
 No notebooks or tasks were oneshoted and after using this service, the authors reviewed and edited the content as needed and take full responsibility for the content of the paper.

@@ -1,9 +1,9 @@
 {{< pagebreak >}}
 \section*{Executive Summary}
 
-**Situation:** Our client plans to enter the US market with an autonomously operated, all-electric ride-hailing fleet, but lacks the operational know-how to run one profitably: where to position vehicles, how much demand to expect, and how to charge without idle or stranded cars. Bane & Wayne Partners was commissioned for a pilot study turning public ride-hailing data for Chicago, a representative US metropolitan market, into data-backed answers ahead of any capital commitment.
+**Situation:** Our client plans to enter the US market with an autonomously operated, all-electric ride-hailing fleet, but lacks the operational know-how to run one profitably: where to position vehicles, how much demand to expect, and how to charge without idle or stranded cars. Bane & Wayne Partners is commissioned for a pilot study turning public ride-hailing data for Chicago, a representative US metropolitan market, into data-backed answers ahead of any capital commitment.
 
-**Approach:** Using 13.5 million cleaned trip records from Chicago's public taxi dataset (2024-2026), enriched with weather, holiday and points-of-interest data, we answered three questions: (i) where and when does demand arise, and at what spatial and temporal resolution can a fleet be managed; (ii) can demand be predicted from calendar, weather and location alone, and does a deep-learning model justify its extra complexity over a simpler benchmark; and (iii) can algorithmically controlled home charging cut electricity cost without leaving a vehicle short of range for its next trip.
+**Approach:** Using 13.5 million cleaned trip records from Chicago's public taxi dataset (2024-2026), enriched with weather, holiday and points-of-interest data, we answer three questions: (i) where and when does demand arise, and at what spatial and temporal resolution can a fleet be managed; (ii) can demand be predicted from calendar, weather and location alone, and does a deep-learning model justify its extra complexity over a simpler benchmark; and (iii) can algorithmically controlled home charging cut electricity cost without leaving a vehicle short of range for its next trip.
 
 **Key findings:**
 
