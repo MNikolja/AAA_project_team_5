@@ -5,21 +5,21 @@ Recharging cost increases exponentially with charging power, and a high penalty 
 
 ## Assumptions and Markov Decision Process Formulation
 The following assumptions were made to define the problem scope:
-1. The EV's battery has a 60 kWh capacity[@bmw_electric_models][@opel_electric_models].
+1. The EV's battery has a 60 kWh capacity [@bmw_electric_models; @opel_electric_models].
 2. The EV arrives home with different states of charge (SoC) but never completely empty, so a minimum SoC of 0.5 kWh is assumed.
-3. To avoid unrealistically high costs, the power in the cost function is normalized by the maximum power (22 kW) and the energy actually charged in a step depends on both charging speed and remaining battery capacity, and this value is used for the cost calculation.
+3. To avoid unrealistically high costs, the power in the cost function is normalized by the maximum power (22 kW). The energy actually charged in a step depends on both charging speed and remaining battery capacity, and this value is used for the cost calculation.
 
 A discrete event simulation models the charging environment, formalized as a Markov Decision Process (MDP):
 1. State ($s_t$): a tuple of the current time step and battery SoC, i.e., (t, $soc_t$).
 2. Actions ($a_t$): a discrete set of charging power levels: {0.0, 4.4, 8.8, 13.2, 17.6, 22.0} kW.
-3. Transitions: SoC is updated each step based on the chosen power, the time interval (0.25h), and remaining capacity.
+3. Transitions: SoC is updated each step based on the chosen power, the time interval (0.25 h), and remaining capacity.
 4. Reward ($r_t$): the negative of the charging cost; at the final step (4 p.m.), a large penalty is subtracted if the final SoC is below the stochastic energy demand for the upcoming trip.
 
-The energy demand for the next trip is drawn from a normal distribution ($\mu$=30 kWh, $\sigma$=5 kWh) upon departure, and the EV's SoC upon arrival from $\mu$=20 kWh, $\sigma$=5 kWh (both shown in @sec-app-rl, @fig-energy-demand-distribution and @fig-recharging-cost). These distributions introduce stochasticity, making it more realistic and challenging for the agent to learn an effective charging strategy that balances cost against the uncertain energy demand and initial SoC.
+The energy demand for the next trip is drawn from a normal distribution ($\mu$=30 kWh, $\sigma$=5 kWh) upon departure, and the EV's SoC upon arrival from $\mu$=20 kWh, $\sigma$=5 kWh (both shown in @sec-app-rl, @fig-energy-demand-distribution and @fig-recharging-cost). These distributions introduce stochasticity, making the task more realistic and challenging for the agent to learn an effective charging strategy that balances cost against the uncertain energy demand and initial SoC.
 
-## Comparison of learners and baseline
-A rule-based baseline calculates the power needed to fully charge the battery and distributes it evenly over the 8 time slots. A tabular Monte Carlo (MC) agent is trained by averaging returns from complete episodes, with epsilon and gamma tuned via grid search. A Deep Q-Network (DQN) agent (stable-baselines3) learns from transitions stored in a replay buffer, with an extensive grid search over learning rate, network architecture, and reward scaling. All three policies are trained on the same number of environment interactions and evaluated on a held-out set of episodes, comparing total reward, cost, and energy shortfall.
+## Comparison of Learners and Baseline
+A rule-based baseline calculates the power needed to fully charge the battery and distributes it evenly over the 8 time slots. A tabular Monte Carlo (MC) agent is trained by averaging returns from complete episodes, with epsilon and gamma tuned via grid search. A Deep Q-Network (DQN) agent (stable-baselines3) learns from transitions stored in a replay buffer, with an extensive grid search over learning rate, network architecture, and reward scaling. Both agents are trained on the same number of environment interactions, and all three policies are evaluated on a held-out set of episodes, comparing total reward, cost, and energy shortfall.
 
-The learning curves (@fig-learning-curves) show DQN stopping early but remaining above the baseline. Baseline and DQN rarely suffer energy shortfall, while MC has more shortfall episodes (@fig-shortfall-share): 0.14% of 5000 test episodes, the only nonzero rate among the three. The baseline nearly always charges at close to maximum power (mean ~21 kW), whereas DQN (~15 kW) and MC (~13 kW) learn to use lower power (@fig-charging-power-distribution), consistent with the final SoC distribution (@fig-final-soc-distribution): the baseline charges to full capacity, while DQN and MC charge only enough for the next trip, reducing cost.
+The learning curves (@fig-learning-curves) show DQN stopping early but remaining above the baseline. The baseline and DQN rarely suffer energy shortfalls, while MC has more shortfall episodes (@fig-shortfall-share): 0.14% of 5000 test episodes, the only nonzero rate among the three. The baseline nearly always charges at close to maximum power (mean ~21 kW), whereas DQN (~15 kW) and MC (~13 kW) learn to use lower power (@fig-charging-power-distribution), consistent with the final SoC distribution (@fig-final-soc-distribution): the baseline charges to full capacity, while DQN and MC charge only enough for the next trip, reducing cost.
 
 Overall, MC outperforms both baseline and DQN in total reward and cost while keeping shortfall low: MC (mean reward -20.60) and DQN (-23.80) both beat the baseline (-41.77) by nearly 50% in cost, with MC the most effective at balancing cost minimization against energy sufficiency.
