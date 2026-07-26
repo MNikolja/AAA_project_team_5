@@ -166,13 +166,71 @@
 
 {{< embed notebooks/08a_SVR.ipynb#fig-svr-train-test-dist >}}
 
-{{< embed notebooks/08a_SVR.ipynb#tbl-svr-full-grid >}}
+
+| Config | Kernel | R² | nMAE |
+|---|---|---|---|
+| community_area_1d | Poly | 0.9329 | 0.2312 |
+| community_area_1d (no TE) | Poly | 0.9314 | 0.2572 |
+| community_area_4h + log1p | RBF | 0.9136 | 0.2924 |
+| community_area_4h + log1p (no TE) | RBF | 0.9049 | 0.3071 |
+| census_tract_1d | Poly | 0.8900 | 0.4027 |
+| community_area_1d + log1p (no TE) | Poly | 0.8866 | 0.2875 |
+| community_area_4h | Poly | 0.8789 | 0.3927 |
+| community_area_1d + log1p | Poly | 0.8713 | 0.2581 |
+| community_area_4h (no TE) | Poly | 0.8591 | 0.4437 |
+| community_area_1h | Poly | 0.8390 | 0.4502 |
+| community_area_1h (no TE) | Poly | 0.8270 | 0.6997 |
+| census_tract_1d + log1p | RBF | 0.8204 | 0.4551 |
+| community_area_1h + log1p | RBF | 0.8202 | 0.4088 |
+| community_area_1h + log1p (no TE) | RBF | 0.8147 | 0.4218 |
+| census_tract_4h | Poly | 0.7348 | 0.7821 |
+| census_tract_4h + log1p | RBF | 0.6362 | 0.6190 |
+| census_tract_1h | Poly | 0.6262 | 1.9534 |
+| census_tract_1h + log1p | RBF | 0.5547 | 0.6794 |
+| census_tract_1d (no TE) | Poly | 0.3000 | 0.9710 |
+| census_tract_4h (no TE) | Poly | 0.2868 | 2.2749 |
+| census_tract_1h + log1p (no TE) | RBF | 0.2355 | 1.1656 |
+| census_tract_1h (no TE) | Poly | 0.2119 | 1.4853 |
+| census_tract_4h + log1p (no TE) | RBF | 0.2055 | 0.8244 |
+| census_tract_1d + log1p (no TE) | Poly | -747.2306 | 1.6217 |
+
+: Full regression metrics across all 24 SVR configurations. The polynomial kernel extrapolates explosively after back-transformation from the log scale, which produces the strongly negative R² in the last row. This configuration is never selected, as the grid search scores all candidates on the original scale. {#tbl-svr-full-grid tbl-pos="H"}
 
 {{< embed notebooks/08a_SVR.ipynb#fig-svr-kernel-comparison >}}
 
 {{< embed notebooks/08a_SVR.ipynb#fig-svr-error-boxplot >}}
 
-{{< embed notebooks/08a_SVR.ipynb#tbl-svr-accuracy >}}
+
+| Configuration          |    n test | =exact |   ±1 |   ±2 |   ±5 | ±10 % | ±20 % |
+|:-----------------------|----------:|-------:|-----:|-----:|-----:|------:|------:|
+| CT, 1h, log1p, TE      | 1,449,082 |   95.3 | 96.3 | 97.0 | 98.1 |   3.2 |   6.5 |
+| CT, 1h, log1p          | 1,449,082 |   85.8 | 96.4 | 97.1 | 98.1 |   2.7 |   5.9 |
+| CT, 1h, raw, TE        | 1,449,082 |   15.0 | 92.9 | 95.9 | 98.0 |   6.1 |  12.4 |
+| CT, 1h, raw            | 1,449,082 |   57.5 | 95.7 | 96.9 | 98.0 |   4.8 |   9.7 |
+| CT, 4h, log1p, TE      |   362,341 |   92.2 | 93.6 | 94.5 | 96.0 |   3.6 |   7.2 |
+| CT, 4h, log1p          |   362,341 |   92.7 | 93.8 | 94.7 | 96.0 |   2.2 |   4.3 |
+| CT, 4h, raw, TE        |   362,341 |   26.7 | 91.1 | 93.5 | 95.9 |   5.9 |  12.3 |
+| CT, 1d, log1p          |    60,449 |   69.6 | 88.9 | 90.4 | 92.1 |   2.9 |   6.4 |
+| CT, 1d, raw, TE        |    60,449 |   25.6 | 82.1 | 87.7 | 92.0 |   5.6 |  12.6 |
+| CA, 1h, log1p, TE      |   235,897 |   46.2 | 76.8 | 85.6 | 92.0 |  10.6 |  21.2 |
+| CT, 1d, log1p, TE      |    60,449 |   86.1 | 88.0 | 89.7 | 91.8 |   4.0 |   8.2 |
+| CA, 1h, log1p          |   235,897 |   45.5 | 75.6 | 85.0 | 91.7 |   9.7 |  19.7 |
+| CA, 1h, raw, TE        |   235,897 |   25.7 | 63.3 | 79.9 | 90.9 |   8.9 |  17.9 |
+| CA, 4h, log1p, TE      |    58,985 |   22.9 | 51.0 | 65.9 | 82.4 |  13.3 |  26.7 |
+| CA, 4h, log1p          |    58,985 |   22.2 | 49.2 | 63.9 | 81.2 |  12.7 |  25.5 |
+| CA, 1h, raw            |   235,897 |    8.3 | 24.3 | 39.1 | 72.4 |   6.1 |  12.1 |
+| CT, 4h, raw            |   362,341 |    6.6 | 19.6 | 32.6 | 67.4 |   6.1 |  12.4 |
+| CA, 4h, raw, TE        |    58,985 |    6.0 | 17.9 | 29.4 | 59.1 |   8.3 |  16.3 |
+| CT, 1d, raw            |    60,449 |    5.6 | 16.0 | 26.3 | 55.8 |   5.7 |  11.1 |
+| CA, 4h, raw            |    58,985 |    5.4 | 16.0 | 26.2 | 51.6 |   7.2 |  14.4 |
+| CA, 1d, log1p, TE      |     9,840 |    5.6 | 17.2 | 26.2 | 48.0 |  20.3 |  38.4 |
+| CA, 1d, log1p          |     9,840 |    4.8 | 13.9 | 22.2 | 40.8 |  16.7 |  32.5 |
+| CA, 1d, raw, TE        |     9,840 |    4.2 | 13.2 | 20.9 | 39.9 |  16.7 |  32.4 |
+| CA, 1d, raw            |     9,840 |    2.3 |  7.0 | 11.3 | 24.8 |  12.9 |  25.0 |
+
+: SVR prediction accuracy under absolute and relative tolerances.
+{#tbl-svr-accuracy tbl-colwidths="[24,12,11,11,11,11,10,10]" tbl-pos="H"}
+
 
 ## Neural Network Results
 
