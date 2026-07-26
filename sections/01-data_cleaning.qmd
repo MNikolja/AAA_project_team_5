@@ -41,10 +41,7 @@ buckets with no trips are filled with a demand of zero to ensure that the models
 
 It must be noted that while the community area can use the whole dataset, the census tract aggregation is quite limited due
 to the privacy protection of the City of Chicago. This results in a significant reduction of usable records for the census
-tract aggregation, especially for low demand areas or during low demand periods. This limitation is important to consider
-when interpreting the results of the models, as it may affect the accuracy and generalizability of the predictions for
-census tracts. The resulting distribution of trip counts per bucket heavily tends towards zero, with the census tract
-grid being dominated by zero- and low-demand buckets, as shown in @fig-trip-count-dist-census and @fig-trip-count-dist-community
+tract aggregation influencing the results of the demand models and their prediction quality. The resulting distribution of trip counts per bucket heavily tends towards zero, with the census tract grid being dominated by zero- and low-demand buckets, as shown in @fig-trip-count-dist-census and @fig-trip-count-dist-community
 in Appendix -@sec-app-trip-count-dist.
 
 
