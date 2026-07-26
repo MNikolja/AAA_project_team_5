@@ -2,7 +2,7 @@
 
 ## Summary
 Returning to the three questions posed in the introduction: demand is highly concentrated
-in space and time. Downtown (the Loop and Near North Side) accounts for over 40 % of pickups
+in space and time. Downtown (the Loop and Near North Side) accounts for roughly 40 % of pickups
 and O'Hare for a further 21 %, while the daily cycle runs from near zero overnight to a peak
 around 17:00 (@sec-data-analytics). Community areas are the spatial unit best suited for fleet
 management, being complete, free of interpolation artefacts, and small enough (roughly three
