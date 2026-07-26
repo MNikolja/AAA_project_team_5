@@ -18,8 +18,8 @@ Second, adopt the four-hour, community-area forecasting model as the operational
 Third, build the charging strategy around private, controllable home charging as the primary channel,
 since that is where cost savings can materialize. Public charging can be treated as a complementary option near high-energy routes such as the airport corridor.
 
-**Caveats and next steps:** The results are a strong planning basis, not a finished operating model: the charging analysis covers a single vehicle on a fixed window, and the demand models cannot yet learn multi-year growth trends given the short observation period.
-Before full rollout, we recommend extending charging optimization to a multi-vehicle fleet with real electricity tariffs, and enriching the demand model with live event, transit and pricing data. Even so, a modest analytics investment already lets the client plan
+**Caveats and next steps:** The results are a strong planning basis, not a finished operating model: the data record completed taxi trips rather than unmet demand, the charging analysis covers a single vehicle on a fixed window, and the demand models cannot yet learn multi-year growth trends given the short observation period.
+Before full rollout, we recommend extending charging optimization to a multi-vehicle fleet with real electricity tariffs, and enriching the demand model with live event, transit and pricing data, validating the forecasts against the client's own booking data once the platform is live. Even so, a modest analytics investment already lets the client plan
 fleet positioning and charging with materially better precision and lower cost than an unassisted, rule-of-thumb operation.
 
 {{< pagebreak >}}

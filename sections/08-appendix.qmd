@@ -10,7 +10,6 @@
 
 | # | Notebook | What it does |
 |---|---|---|
-| 00 | [00_create_mini_dataset.ipynb](notebooks/00_create_mini_dataset.ipynb) | Cuts one week out of the raw CSV (optional, see §6) |
 | 01 | [01_data_cleaning.ipynb](notebooks/01_data_cleaning.ipynb) | Cleaning: types, missing values, duplicates, outliers, time features |
 | 02 | [02_other_data_sources.ipynb](notebooks/02_other_data_sources.ipynb) | Adds holidays, events, weather, POIs and centroids (needs internet) |
 | 03 | [03_data_preparation_for_nn_and_svm.ipynb](notebooks/03_data_preparation_for_nn_and_svm.ipynb) | Aggregates demand per area and time bin, splits and scales it |
@@ -149,7 +148,7 @@
 
 ## SVR {#sec-app-svr-features}
 
-@tbl-svr-features lists the input features used by the SVR models. Cyclic temporal features and the point-of-interest counts are used at every temporal resolution except the daily bin, where `hour_sin` / `hour_cos` are dropped since an hour-of-day signal is meaningless when every basket spans a full day. The target-encoding feature `spatial_target_mean` is only included in configurations where target encoding is enabled, which includes the final selected SVR (community areas, 4h resolution).
+@tbl-svr-features lists the input features used by the SVR models. All features are used at every temporal resolution; only in the daily bin are `hour_sin` / `hour_cos` dropped. The target-encoding feature `spatial_target_mean` appears only where target encoding is enabled, including the final selected SVR (community areas, 4h).
 
 | Category | Feature(s) | Description |
 |---|---|---|
@@ -228,7 +227,7 @@
 | CA, 1d, raw, TE        |     9,840 |    4.2 | 13.2 | 20.9 | 39.9 |  16.7 |  32.4 |
 | CA, 1d, raw            |     9,840 |    2.3 |  7.0 | 11.3 | 24.8 |  12.9 |  25.0 |
 
-: SVR prediction accuracy under absolute and relative tolerances.
+: SVR prediction accuracy. Relative tolerances are computed only over baskets with non-zero demand.
 {#tbl-svr-accuracy tbl-colwidths="[24,12,11,11,11,11,10,10]" tbl-pos="H"}
 
 
